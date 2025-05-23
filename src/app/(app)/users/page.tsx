@@ -1,5 +1,5 @@
 
-"use client"; // Added to allow client-side state and event handlers for potential future interactions
+"use client"; 
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -7,9 +7,9 @@ import { Users, PlusCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import UserActions from "@/components/users/UserActions";
-import type { User as UserType } from "@/types"; // Using UserType to avoid conflict
-import React, { useState } from "react"; // Import useState
-import CreateUserModal from '@/components/auth/CreateUserModal'; // Import the modal
+import type { User as UserType } from "@/types"; 
+import React, { useState, useEffect } from "react"; 
+import CreateUserModal from '@/components/auth/CreateUserModal'; 
 
 
 const generateDemoUsers = (count: number): UserType[] => {
@@ -30,12 +30,16 @@ const generateDemoUsers = (count: number): UserType[] => {
   return users;
 };
 
-const demoUsers = generateDemoUsers(205); // Generate 205 demo users
 
 export default function UsersPage() {
   // TODO: Implement RBAC check
   // TODO: Implement actual data fetching, search, filter, pagination
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [demoUsers, setDemoUsers] = useState<UserType[]>([]);
+
+  useEffect(() => {
+    setDemoUsers(generateDemoUsers(205));
+  }, []);
 
 
   return (
@@ -52,7 +56,7 @@ export default function UsersPage() {
       <Card>
         <CardHeader>
           <CardTitle>Users List</CardTitle>
-          <CardDescription>Manage all users in the system. Showing {demoUsers.length} users.</CardDescription>
+          <CardDescription>Manage all users in the system. {demoUsers.length > 0 ? `Showing ${demoUsers.length} users.` : 'Loading users...'}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Filters and Search */}
@@ -64,16 +68,14 @@ export default function UsersPage() {
           {/* User Table */}
           <div>
             <Table>
-              <TableHeader className="sticky top-16 bg-card z-10">{/* Changed top-0 to top-16 */}
-                <TableRow>
+              <TableHeader className="sticky top-16 bg-card z-10"><TableRow>
                   <TableHead>Username</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Role</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Last Login</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
+                </TableRow></TableHeader>
               <TableBody>
                 {demoUsers.map((user) => (
                   <TableRow key={user.id}>
@@ -95,6 +97,13 @@ export default function UsersPage() {
                     </TableCell>
                   </TableRow>
                 ))}
+                 {demoUsers.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center text-muted-foreground">
+                      Loading demo users...
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </div>
