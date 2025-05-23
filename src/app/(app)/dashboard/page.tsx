@@ -1,15 +1,13 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart, Cpu, HardDrive, LineChartIcon, Network, Users, Package, Server as ServerIcon, AlertTriangle } from "lucide-react";
+import { Cpu, HardDrive, Network, Users, Package, Server as ServerIcon, AlertTriangle, Globe } from "lucide-react";
 import { KpiCard } from "@/components/shared/KpiCard";
 import {
   ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
 } from "@/components/ui/chart";
-import { Bar, Line, LineChart, CartesianGrid, XAxis, YAxis, Tooltip as RechartsTooltip, Legend as RechartsLegend, ResponsiveContainer } from "recharts";
+import { Bar, Line, LineChart, CartesianGrid, XAxis, YAxis, Tooltip as RechartsTooltip, Legend as RechartsLegend, BarChart as RechartsBarChart } from "recharts";
 
 // Sample data for charts - replace with real data fetching
 const serverMetricsData = [
@@ -50,20 +48,18 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={serverMetricsData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                  <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
-                  <YAxis stroke="hsl(var(--muted-foreground))" />
-                  <RechartsTooltip
-                    contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
-                    labelStyle={{ color: 'hsl(var(--foreground))' }}
-                  />
-                  <RechartsLegend />
-                  <Line type="monotone" dataKey="cpu" stroke={chartConfig.cpu.color} activeDot={{ r: 8 }} name="CPU (%)" />
-                  <Line type="monotone" dataKey="ram" stroke={chartConfig.ram.color} activeDot={{ r: 8 }} name="RAM (%)" />
-                </LineChart>
-              </ResponsiveContainer>
+              <LineChart data={serverMetricsData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
+                <YAxis stroke="hsl(var(--muted-foreground))" />
+                <RechartsTooltip
+                  contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
+                  labelStyle={{ color: 'hsl(var(--foreground))' }}
+                />
+                <RechartsLegend />
+                <Line type="monotone" dataKey="cpu" stroke={chartConfig.cpu.color} activeDot={{ r: 8 }} name="CPU (%)" />
+                <Line type="monotone" dataKey="ram" stroke={chartConfig.ram.color} activeDot={{ r: 8 }} name="RAM (%)" />
+              </LineChart>
             </ChartContainer>
           </CardContent>
         </Card>
@@ -73,21 +69,19 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[300px] w-full">
-               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={serverMetricsData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                  <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
-                  <YAxis yAxisId="left" orientation="left" stroke={chartConfig.disk.color} />
-                  <YAxis yAxisId="right" orientation="right" stroke={chartConfig.network.color} />
-                  <RechartsTooltip
-                    contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
-                    labelStyle={{ color: 'hsl(var(--foreground))' }}
-                  />
-                  <RechartsLegend />
-                  <Bar yAxisId="left" dataKey="disk" fill={chartConfig.disk.color} name="Disk (%)" />
-                  <Bar yAxisId="right" dataKey="network" fill={chartConfig.network.color} name="Network (Mbps)" />
-                </BarChart>
-              </ResponsiveContainer>
+              <RechartsBarChart data={serverMetricsData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
+                <YAxis yAxisId="left" orientation="left" stroke={chartConfig.disk.color} />
+                <YAxis yAxisId="right" orientation="right" stroke={chartConfig.network.color} />
+                <RechartsTooltip
+                  contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
+                  labelStyle={{ color: 'hsl(var(--foreground))' }}
+                />
+                <RechartsLegend />
+                <Bar yAxisId="left" dataKey="disk" fill={chartConfig.disk.color} name="Disk (%)" />
+                <Bar yAxisId="right" dataKey="network" fill={chartConfig.network.color} name="Network (Mbps)" />
+              </RechartsBarChart>
             </ChartContainer>
           </CardContent>
         </Card>
