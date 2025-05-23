@@ -127,7 +127,7 @@ const CreateEditProjectModal: React.FC<CreateEditProjectModalProps> = ({
             {projectData ? 'Update the details of your project.' : 'Fill in the details for your new project.'}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="flex-grow pr-6 -mr-6"> {/* Added ScrollArea */}
+        <ScrollArea className="flex-grow pr-6 -mr-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 py-2">
             <div>
               <Label htmlFor="name">Project Name</Label>
@@ -180,18 +180,25 @@ const CreateEditProjectModal: React.FC<CreateEditProjectModalProps> = ({
               <Label>Environment Variables</Label>
               <div className="space-y-2">
                 {fields.map((field, index) => (
-                  <div key={field.id} className="flex items-center gap-2">
+                  <div key={field.id} className="flex flex-col sm:flex-row items-center gap-2">
                     <Input
                       {...register(`envVars.${index}.key`)}
                       placeholder="KEY"
-                      className="flex-1"
+                      className="w-full sm:flex-1"
                     />
                     <Input
                       {...register(`envVars.${index}.value`)}
                       placeholder="VALUE"
-                      className="flex-1"
+                      className="w-full sm:flex-1"
                     />
-                    <Button type="button" variant="ghost" size="icon" onClick={() => remove(index)} className="text-destructive hover:text-destructive">
+                    <Button 
+                      type="button" 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => remove(index)} 
+                      className="text-destructive hover:text-destructive self-center sm:self-auto"
+                      aria-label="Remove environment variable"
+                    >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>

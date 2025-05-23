@@ -68,22 +68,23 @@ export default function UsersPage() {
   };
 
   const getShowingText = () => {
-    if (filteredUsers.length === 0 && allDemoUsers.length > 0) return "No users match your search criteria.";
+    if (filteredUsers.length === 0 && allDemoUsers.length > 0 && searchTerm) return "No users match your search criteria.";
     if (allDemoUsers.length === 0) return "Loading users...";
+    if (filteredUsers.length === 0) return "No users yet.";
     const startItem = (currentPage - 1) * ITEMS_PER_PAGE + 1;
     const endItem = Math.min(currentPage * ITEMS_PER_PAGE, filteredUsers.length);
     return `Showing ${startItem}-${endItem} of ${filteredUsers.length} users.`;
   }
 
   return (
-    <div className="container mx-auto py-6"> {/* py-8 to py-6 */}
-      <div className="flex items-center justify-between mb-6"> {/* mb-8 to mb-6 */}
-        <div className="flex items-center gap-2"> {/* gap-3 to gap-2 */}
-          <Users className="w-7 h-7 text-primary" /> {/* w-8 h-8 to w-7 h-7 */}
-          <h1 className="text-2xl font-bold text-foreground">User Management</h1> {/* text-3xl to text-2xl */}
+    <div className="container mx-auto py-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-6">
+        <div className="flex items-center gap-2">
+          <Users className="w-7 h-7 text-primary" />
+          <h1 className="text-2xl font-bold text-foreground">User Management</h1>
         </div>
-        <Button onClick={() => setIsCreateModalOpen(true)} size="sm"> {/* Added size="sm" */}
-          <PlusCircle className="mr-1.5 h-3.5 w-3.5" /> Create User {/* Icon size adjusted */}
+        <Button onClick={() => setIsCreateModalOpen(true)} size="sm" className="w-full sm:w-auto">
+          <PlusCircle className="mr-1.5 h-3.5 w-3.5" /> Create User
         </Button>
       </div>
       <Card>
@@ -93,11 +94,11 @@ export default function UsersPage() {
             Manage all users in the system. {getShowingText()}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-3"> {/* space-y-4 to space-y-3 */}
-          <div className="flex items-center gap-2"> {/* gap-4 to gap-2 */}
+        <CardContent className="space-y-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <Input 
               placeholder="Search users by username or email..." 
-              className="max-w-xs"  // max-w-sm to max-w-xs
+              className="w-full sm:max-w-xs"
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -106,7 +107,7 @@ export default function UsersPage() {
             />
           </div>
 
-          <div>
+          <div className="overflow-x-auto">
             <Table>
               <TableHeader className="sticky top-14 bg-card z-10"><TableRow>
                   <TableHead>Username</TableHead>
@@ -123,7 +124,7 @@ export default function UsersPage() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.role.charAt(0).toUpperCase() + user.role.slice(1)}</TableCell>
                     <TableCell>
-                       <span className={`px-1.5 py-0.5 text-xs rounded-full ${ // px-2 py-1 to px-1.5 py-0.5
+                       <span className={`px-1.5 py-0.5 text-xs rounded-full ${
                         user.status === 'active' ? 'bg-green-500/20 text-green-700 dark:text-green-400' :
                         user.status === 'inactive' ? 'bg-yellow-500/20 text-yellow-700 dark:text-yellow-400' :
                         'bg-red-500/20 text-red-700 dark:text-red-400'
@@ -137,14 +138,14 @@ export default function UsersPage() {
                     </TableCell>
                   </TableRow>
                 ))}
-                 {paginatedUsers.length === 0 && allDemoUsers.length > 0 && (
+                 {paginatedUsers.length === 0 && allDemoUsers.length > 0 && searchTerm && (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center text-muted-foreground">
                       No users match your search criteria.
                     </TableCell>
                   </TableRow>
                 )}
-                 {allDemoUsers.length === 0 && (
+                 {allDemoUsers.length === 0 && !searchTerm && (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center text-muted-foreground">
                       Loading demo users...
@@ -155,17 +156,18 @@ export default function UsersPage() {
             </Table>
           </div>
           {totalPages > 1 && (
-            <div className="flex items-center justify-end space-x-1 pt-3"> {/* space-x-2 pt-4 to space-x-1 pt-3 */}
+            <div className="flex flex-col sm:flex-row items-center sm:justify-end gap-2 sm:space-x-1 pt-3">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handlePreviousPage}
                 disabled={currentPage === 1}
+                className="w-full sm:w-auto"
               >
-                <ChevronLeft className="mr-1 h-3.5 w-3.5" /> {/* mr-2 h-4 w-4 to mr-1 h-3.5 w-3.5 */}
+                <ChevronLeft className="mr-1 h-3.5 w-3.5" />
                 Previous
               </Button>
-              <span className="text-xs text-muted-foreground"> {/* text-sm to text-xs */}
+              <span className="text-xs text-muted-foreground">
                 Page {currentPage} of {totalPages}
               </span>
               <Button
@@ -173,9 +175,10 @@ export default function UsersPage() {
                 size="sm"
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages}
+                className="w-full sm:w-auto"
               >
                 Next
-                <ChevronRight className="ml-1 h-3.5 w-3.5" /> {/* ml-2 h-4 w-4 to ml-1 h-3.5 w-3.5 */}
+                <ChevronRight className="ml-1 h-3.5 w-3.5" />
               </Button>
             </div>
           )}

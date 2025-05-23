@@ -104,13 +104,13 @@ export default function ProjectsPage() {
       case 'live':
         return 'bg-green-500/20 text-green-700 dark:text-green-400';
       case 'development':
-        return 'bg-blue-500/20 text-blue-700 dark:text-blue-400'; // Changed from primary to blue
+        return 'bg-blue-500/20 text-blue-700 dark:text-blue-400'; 
       case 'paused':
         return 'bg-yellow-500/20 text-yellow-700 dark:text-yellow-400';
       case 'archived':
-        return 'bg-gray-500/20 text-gray-700 dark:text-gray-400'; // Changed from muted to gray
+        return 'bg-gray-500/20 text-gray-700 dark:text-gray-400'; 
       case 'error':
-        return 'bg-red-500/20 text-red-700 dark:text-red-400'; // Changed from destructive to red
+        return 'bg-red-500/20 text-red-700 dark:text-red-400'; 
       default:
         return 'bg-gray-500/20 text-gray-700 dark:text-gray-400';
     }
@@ -125,8 +125,9 @@ export default function ProjectsPage() {
   };
   
   const getShowingText = () => {
-    if (filteredProjects.length === 0 && allProjects.length > 0) return "No projects match your search.";
+    if (filteredProjects.length === 0 && allProjects.length > 0 && searchTerm) return "No projects match your search.";
     if (allProjects.length === 0) return "Loading projects...";
+     if (filteredProjects.length === 0) return "No projects yet.";
     const startItem = (currentPage - 1) * ITEMS_PER_PAGE + 1;
     const endItem = Math.min(currentPage * ITEMS_PER_PAGE, filteredProjects.length);
     return `Showing ${startItem}-${endItem} of ${filteredProjects.length} projects.`;
@@ -135,12 +136,12 @@ export default function ProjectsPage() {
 
   return (
     <div className="container mx-auto py-6">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-6">
         <div className="flex items-center gap-2">
           <PackageIcon className="w-7 h-7 text-primary" />
           <h1 className="text-2xl font-bold text-foreground">Project Management</h1>
         </div>
-        <Button onClick={handleCreateNewProject} size="sm">
+        <Button onClick={handleCreateNewProject} size="sm" className="w-full sm:w-auto">
           <PlusCircle className="mr-1.5 h-3.5 w-3.5" /> Create Project
         </Button>
       </div>
@@ -152,10 +153,10 @@ export default function ProjectsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <Input
               placeholder="Search projects by name or description..."
-              className="max-w-xs"
+              className="w-full sm:max-w-xs"
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -193,14 +194,14 @@ export default function ProjectsPage() {
                     </TableCell>
                   </TableRow>
                 ))}
-                {paginatedProjects.length === 0 && allProjects.length > 0 && (
+                {paginatedProjects.length === 0 && allProjects.length > 0 && searchTerm && (
                   <TableRow>
                     <TableCell colSpan={4} className="text-center text-muted-foreground">
                       No projects match your search criteria.
                     </TableCell>
                   </TableRow>
                 )}
-                {allProjects.length === 0 && (
+                {allProjects.length === 0 && !searchTerm && (
                   <TableRow>
                     <TableCell colSpan={4} className="text-center text-muted-foreground">
                      Loading demo projects...
@@ -211,12 +212,13 @@ export default function ProjectsPage() {
             </Table>
           </div>
            {totalPages > 1 && (
-            <div className="flex items-center justify-end space-x-1 pt-3">
+            <div className="flex flex-col sm:flex-row items-center sm:justify-end gap-2 sm:space-x-1 pt-3">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handlePreviousPage}
                 disabled={currentPage === 1}
+                className="w-full sm:w-auto"
               >
                 <ChevronLeft className="mr-1 h-3.5 w-3.5" />
                 Previous
@@ -229,6 +231,7 @@ export default function ProjectsPage() {
                 size="sm"
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages}
+                className="w-full sm:w-auto"
               >
                 Next
                 <ChevronRight className="ml-1 h-3.5 w-3.5" />
