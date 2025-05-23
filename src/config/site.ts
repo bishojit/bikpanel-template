@@ -14,7 +14,7 @@ import {
   ShieldAlert,
   Brush,
   Github,
-  ServerCog, // Added for Server Maintenance
+  ServerCog,
 } from "lucide-react";
 
 export const siteConfig = {
@@ -35,12 +35,6 @@ export const siteConfig = {
       roles: ["admin", "user", "operator"],
     },
     {
-      title: "Users",
-      href: "/users",
-      icon: Users,
-      roles: ["admin"],
-    },
-    {
       title: "Projects",
       href: "/projects",
       icon: Package,
@@ -51,6 +45,12 @@ export const siteConfig = {
       href: "/services",
       icon: Server,
       roles: ["admin", "user", "operator"],
+    },
+    {
+      title: "Users",
+      href: "/users",
+      icon: Users,
+      roles: ["admin"],
     },
     {
       title: "Domains",
@@ -71,12 +71,12 @@ export const siteConfig = {
       roles: ["admin"],
       children: [
         { title: "General", href: "/settings/general", icon: Settings, roles: ["admin"] },
+        { title: "Security", href: "/settings/auth", icon: KeyRound, roles: ["admin"] },
         { title: "Server Maintenance", href: "/settings/server", icon: ServerCog, roles: ["admin"] },
         { title: "Docker", href: "/settings/docker", icon: Combine, roles: ["admin"] },
-        { title: "Security", href: "/settings/auth", icon: KeyRound, roles: ["admin"] }, // Renamed for clarity
         { title: "Notifications", href: "/settings/notifications", icon: ShieldAlert, roles: ["admin"] },
-        { title: "Branding", href: "/settings/branding", icon: Brush, roles: ["admin"] },
         { title: "GitHub", href: "/settings/github", icon: Github, roles: ["admin"] },
+        { title: "Branding", href: "/settings/branding", icon: Brush, roles: ["admin"] },
       ],
     },
     {
@@ -93,3 +93,4 @@ export const siteConfig = {
     },
   ] as NavItem[],
 };
+
