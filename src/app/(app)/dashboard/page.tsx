@@ -105,7 +105,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              <li className="p-2 rounded-md bg-destructive/10 text-destructive-foreground border border-destructive text-sm">High CPU usage on server-01</li> {/* p-3 to p-2, added text-sm */}
+              <li className="p-2 rounded-md bg-destructive/10 text-destructive dark:text-destructive-foreground border border-destructive text-sm">High CPU usage on server-01</li> {/* p-3 to p-2, added text-sm */}
               <li className="p-2 rounded-md bg-muted text-muted-foreground text-sm">Disk space running low on backup-volume</li> {/* p-3 to p-2, added text-sm */}
             </ul>
           </CardContent>
