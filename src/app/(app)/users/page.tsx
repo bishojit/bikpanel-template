@@ -68,7 +68,8 @@ export default function UsersPage() {
   };
 
   const getShowingText = () => {
-    if (filteredUsers.length === 0) return "No users found.";
+    if (filteredUsers.length === 0 && allDemoUsers.length > 0) return "No users match your search criteria.";
+    if (allDemoUsers.length === 0) return "Loading users...";
     const startItem = (currentPage - 1) * ITEMS_PER_PAGE + 1;
     const endItem = Math.min(currentPage * ITEMS_PER_PAGE, filteredUsers.length);
     return `Showing ${startItem}-${endItem} of ${filteredUsers.length} users.`;
@@ -107,16 +108,14 @@ export default function UsersPage() {
 
           <div>
             <Table>
-              <TableHeader className="sticky top-14 bg-card z-10"> {/* top-16 to top-14 (due to header height change) */}
-                <TableRow>
+              <TableHeader className="sticky top-14 bg-card z-10"><TableRow>
                   <TableHead>Username</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Role</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Last Login</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
+                </TableRow></TableHeader>
               <TableBody>
                 {paginatedUsers.map((user) => (
                   <TableRow key={user.id}>
