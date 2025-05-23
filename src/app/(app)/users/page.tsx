@@ -81,7 +81,7 @@ export default function UsersPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-6">
         <div className="flex items-center gap-2">
           <Users className="w-7 h-7 text-primary" />
-          <h1 className="text-2xl font-bold text-foreground">User Management</h1>
+          <h1 className="text-xl font-bold text-foreground">User Management</h1>
         </div>
         <Button onClick={() => setIsCreateModalOpen(true)} size="sm" className="w-full sm:w-auto">
           <PlusCircle className="mr-1.5 h-3.5 w-3.5" /> Create User

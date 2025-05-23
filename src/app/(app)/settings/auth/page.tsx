@@ -11,7 +11,7 @@ export default function AuthSettingsPage() {
     <div className="container mx-auto py-6">
       <div className="flex items-center gap-2 mb-6">
         <Lock className="w-7 h-7 text-primary" />
-        <h1 className="text-2xl font-bold text-foreground">Security Settings</h1>
+        <h1 className="text-xl font-bold text-foreground">Security Settings</h1>
       </div>
       <Card className="mb-6">
         <CardHeader>

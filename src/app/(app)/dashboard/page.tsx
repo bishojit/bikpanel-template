@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Cpu, HardDrive, Network, Users, Package, Server as ServerIcon, AlertTriangle, Globe } from "lucide-react";
+import { Cpu, HardDrive, Users, Package, Server as ServerIcon, AlertTriangle, Globe } from "lucide-react";
 import { KpiCard } from "@/components/shared/KpiCard";
 import {
   ChartContainer,
@@ -31,7 +31,7 @@ const chartConfig = {
 export default function DashboardPage() {
   return (
     <div className="container mx-auto py-6"> {/* py-8 to py-6 */}
-      <h1 className="text-2xl font-bold mb-6 text-foreground">Dashboard Overview</h1> {/* text-3xl mb-8 to text-2xl mb-6 */}
+      <h1 className="text-xl font-bold mb-6 text-foreground">Dashboard Overview</h1> {/* text-2xl to text-xl */}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"> {/* gap-6 mb-8 to gap-4 mb-6 */}
         <KpiCard title="Total Users" value="1,234" icon={<Users className="w-5 h-5 text-primary" />} /> {/* w-6 h-6 to w-5 h-5 */}
@@ -105,7 +105,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              <li className="p-2 rounded-md bg-destructive/10 text-destructive dark:text-destructive-foreground border border-destructive text-sm">High CPU usage on server-01</li> {/* p-3 to p-2, added text-sm */}
+              <li className="p-2 rounded-md bg-destructive/10 text-destructive border border-destructive text-sm">High CPU usage on server-01</li> {/* p-3 to p-2, added text-sm */}
               <li className="p-2 rounded-md bg-muted text-muted-foreground text-sm">Disk space running low on backup-volume</li> {/* p-3 to p-2, added text-sm */}
             </ul>
           </CardContent>

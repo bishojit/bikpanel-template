@@ -20,7 +20,7 @@ export default function SettingsPage() {
     <div className="container mx-auto py-6">
       <div className="flex items-center gap-2 mb-6">
         <Settings className="w-7 h-7 text-primary" />
-        <h1 className="text-2xl font-bold text-foreground">Server Settings</h1>
+        <h1 className="text-xl font-bold text-foreground">Server Settings</h1>
       </div>
       <Card>
         <CardHeader>

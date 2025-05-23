@@ -7,7 +7,7 @@ export default function ClusterPage() {
     <div className="container mx-auto py-6"> {/* py-8 to py-6 */}
       <div className="flex items-center gap-2 mb-6"> {/* gap-3 mb-8 to gap-2 mb-6 */}
         <Network className="w-7 h-7 text-primary" /> {/* w-8 h-8 to w-7 h-7 */}
-        <h1 className="text-2xl font-bold text-foreground">Cluster Management</h1> {/* text-3xl to text-2xl */}
+        <h1 className="text-xl font-bold text-foreground">Cluster Management</h1> {/* text-2xl to text-xl */}
       </div>
       <Card>
         <CardHeader>
