@@ -1,3 +1,4 @@
+
 import type { NavItem } from "@/types";
 import {
   LayoutDashboard,
@@ -11,6 +12,9 @@ import {
   Network,
   Trash2,
   ShieldAlert,
+  Brush,
+  Github,
+  ServerCog, // Added for Server Maintenance
 } from "lucide-react";
 
 export const siteConfig = {
@@ -66,10 +70,13 @@ export const siteConfig = {
       icon: Settings,
       roles: ["admin"],
       children: [
-        { title: "General", href: "/settings/general", icon: Settings },
-        { title: "Docker", href: "/settings/docker", icon: Combine }, // Duplicate of Docker Cleanup? Maybe this is for global settings
-        { title: "Authentication", href: "/settings/auth", icon: KeyRound },
-        { title: "Notifications", href: "/settings/notifications", icon: ShieldAlert },
+        { title: "General", href: "/settings/general", icon: Settings, roles: ["admin"] },
+        { title: "Server Maintenance", href: "/settings/server", icon: ServerCog, roles: ["admin"] },
+        { title: "Docker", href: "/settings/docker", icon: Combine, roles: ["admin"] },
+        { title: "Security", href: "/settings/auth", icon: KeyRound, roles: ["admin"] }, // Renamed for clarity
+        { title: "Notifications", href: "/settings/notifications", icon: ShieldAlert, roles: ["admin"] },
+        { title: "Branding", href: "/settings/branding", icon: Brush, roles: ["admin"] },
+        { title: "GitHub", href: "/settings/github", icon: Github, roles: ["admin"] },
       ],
     },
     {
@@ -81,7 +88,7 @@ export const siteConfig = {
     {
       title: "License",
       href: "/license",
-      icon: KeyRound, // Consider a more specific icon for license
+      icon: KeyRound,
       roles: ["admin"],
     },
   ] as NavItem[],
