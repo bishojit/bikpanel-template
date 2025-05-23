@@ -33,7 +33,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Logo } from "@/components/shared/Logo";
 import { siteConfig } from "@/config/site";
 import type { NavItem } from "@/types";
-import { ChevronDown, LogOut, UserCircle, Settings as SettingsIconLucide } from "lucide-react"; // Renamed Settings to avoid conflict
+import { ChevronDown, LogOut, UserCircle, Settings as SettingsIconLucide, BarChart3 } from "lucide-react"; // Renamed Settings to avoid conflict
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
 
@@ -177,7 +177,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               </DropdownMenu>
             </div>
         </header>
-        <main className="flex-1 p-2 overflow-auto sm:p-3">  {/* p-3 sm:p-4 to p-2 sm:p-3 */}
+        <main className="flex-1 p-2 sm:p-3">  {/* Removed overflow-auto */}
           {children}
         </main>
       </SidebarInset>
