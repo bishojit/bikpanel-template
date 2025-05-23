@@ -64,7 +64,7 @@ export default function UsersPage() {
           {/* User Table */}
           <div>
             <Table>
-              <TableHeader className="sticky top-16 bg-card z-10"> {/* Changed top-0 to top-16 */}
+              <TableHeader className="sticky top-16 bg-card z-10">{/* Changed top-0 to top-16 */}
                 <TableRow>
                   <TableHead>Username</TableHead>
                   <TableHead>Email</TableHead>
