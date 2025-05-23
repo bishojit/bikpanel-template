@@ -10,11 +10,11 @@ import {
   Combine,
   KeyRound,
   Network,
-  // Trash2, // Removed as it's no longer a top-level item
   ShieldAlert,
   Brush,
   Github,
   ServerCog,
+  BarChart3, // Added for Metrics page
 } from "lucide-react";
 
 export const siteConfig = {
@@ -32,6 +32,12 @@ export const siteConfig = {
       title: "Dashboard",
       href: "/dashboard",
       icon: LayoutDashboard,
+      roles: ["admin", "user", "operator"],
+    },
+    {
+      title: "Metrics", // New Metrics Page
+      href: "/metrics",
+      icon: BarChart3,
       roles: ["admin", "user", "operator"],
     },
     {
@@ -58,12 +64,6 @@ export const siteConfig = {
       icon: Globe,
       roles: ["admin", "operator"],
     },
-    // { // Removed standalone Docker Cleanup from sidebar
-    //   title: "Docker Cleanup",
-    //   href: "/docker/cleanup",
-    //   icon: Trash2,
-    //   roles: ["admin", "operator"],
-    // },
     {
       title: "Settings",
       href: "/settings",

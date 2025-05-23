@@ -3,31 +3,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Cpu, HardDrive, Users, Package, Server as ServerIcon, AlertTriangle, Globe, MemoryStick, Disc3, Gauge, ArrowDownToLine, ArrowUpFromLine } from "lucide-react"; // Added MemoryStick, Disc3, Gauge, ArrowDownToLine, ArrowUpFromLine
-// Removed KpiCard import
-import {
-  ChartContainer,
-  ChartLegendContent, // Keep if used by larger charts, otherwise remove
-} from "@/components/ui/chart";
-import { Bar, Line, LineChart, CartesianGrid, XAxis, YAxis, Tooltip as RechartsTooltip, Legend as RechartsLegend, BarChart as RechartsBarChart } from "recharts";
-import { ResourceMetricCard } from '@/components/dashboard/ResourceMetricCard'; // Import new card
-
-// Sample data for charts - replace with real data fetching
-const serverMetricsData = [
-  { name: '10min ago', cpu: 65, ram: 70, disk: 40, network: 120 },
-  { name: '8min ago', cpu: 68, ram: 72, disk: 41, network: 150 },
-  { name: '6min ago', cpu: 70, ram: 68, disk: 42, network: 130 },
-  { name: '4min ago', cpu: 60, ram: 75, disk: 42, network: 160 },
-  { name: '2min ago', cpu: 75, ram: 78, disk: 43, network: 140 },
-  { name: 'Now', cpu: 72, ram: 76, disk: 44, network: 155 },
-];
-
-const chartConfig = {
-  cpu: { label: "CPU Usage (%)", color: "hsl(var(--chart-1))" },
-  ram: { label: "RAM Usage (%)", color: "hsl(var(--chart-2))" },
-  disk: { label: "Disk Usage (%)", color: "hsl(var(--chart-3))" },
-  network: { label: "Network (Mbps)", color: "hsl(var(--chart-4))" },
-};
+import { Cpu, Users, Server as ServerIcon, AlertTriangle, Globe, MemoryStick, Disc3, Gauge, ArrowDownToLine, ArrowUpFromLine } from "lucide-react";
+import { ResourceMetricCard } from '@/components/dashboard/ResourceMetricCard';
 
 const generateSparklineData = () => {
   return Array.from({ length: 10 }, (_, i) => ({
@@ -53,7 +30,6 @@ export default function DashboardPage() {
           title="CPU"
           iconComponent={Cpu}
           valueDisplay="34.28%"
-          // ringPercentage={34.28} // Removed
           sparklineData={cpuSparkline}
           footerInfo1="Load 0.04, 0.02, 0.00"
           themeName="orange"
@@ -62,7 +38,6 @@ export default function DashboardPage() {
           title="Memory"
           iconComponent={MemoryStick}
           valueDisplay="24.47%"
-          // ringPercentage={24.47} // Removed
           sparklineData={memorySparkline}
           footerInfo1="Used 3.4 GB / 30 GB"
           themeName="blue"
@@ -71,7 +46,6 @@ export default function DashboardPage() {
           title="Disk"
           iconComponent={Disc3}
           valueDisplay="12.75%"
-          // ringPercentage={12.75} // Removed
           sparklineData={diskSparkline}
           footerInfo1="Used 39.7 GB / 1024 GB"
           themeName="green"
@@ -80,7 +54,6 @@ export default function DashboardPage() {
           title="Network"
           iconComponent={Gauge}
           valueDisplay="0.24 / 2.75 Mbps"
-          // ringPercentage={10} // Removed
           sparklineData={networkSparkline}
           footerInfo1="0.24 MB"
           footerInfo2="2.75 MB"
@@ -90,51 +63,7 @@ export default function DashboardPage() {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Cpu className="w-3.5 h-3.5" /> CPU & RAM Usage</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig} className="h-[250px] w-full">
-              <LineChart data={serverMetricsData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={10}/>
-                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={10}/>
-                <RechartsTooltip
-                  contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
-                  labelStyle={{ color: 'hsl(var(--foreground))' }}
-                />
-                <RechartsLegend wrapperStyle={{fontSize: "0.75rem"}} />
-                <Line type="monotone" dataKey="cpu" stroke={chartConfig.cpu.color} activeDot={{ r: 6 }} name="CPU (%)" strokeWidth={2} />
-                <Line type="monotone" dataKey="ram" stroke={chartConfig.ram.color} activeDot={{ r: 6 }} name="RAM (%)" strokeWidth={2}/>
-              </LineChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2"><HardDrive className="w-3.5 h-3.5" /> Disk & Network Usage</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig} className="h-[250px] w-full">
-              <RechartsBarChart data={serverMetricsData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={10}/>
-                <YAxis yAxisId="left" orientation="left" stroke={chartConfig.disk.color} fontSize={10}/>
-                <YAxis yAxisId="right" orientation="right" stroke={chartConfig.network.color} fontSize={10}/>
-                <RechartsTooltip
-                  contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
-                  labelStyle={{ color: 'hsl(var(--foreground))' }}
-                />
-                <RechartsLegend wrapperStyle={{fontSize: "0.75rem"}}/>
-                <Bar yAxisId="left" dataKey="disk" fill={chartConfig.disk.color} name="Disk (%)" barSize={15} />
-                <Bar yAxisId="right" dataKey="network" fill={chartConfig.network.color} name="Network (Mbps)" barSize={15}/>
-              </RechartsBarChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Graphs have been moved to /metrics page */}
 
       <Card className="mb-6">
         <CardHeader>
@@ -155,7 +84,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              <li className="p-2 rounded-md bg-destructive/10 text-destructive border border-destructive text-sm">High CPU usage on server-01</li>
+              <li className="p-2 rounded-md bg-destructive/10 text-destructive dark:text-destructive-foreground border border-destructive text-sm">High CPU usage on server-01</li>
               <li className="p-2 rounded-md bg-muted text-muted-foreground text-sm">Disk space running low on backup-volume</li>
             </ul>
           </CardContent>
@@ -176,4 +105,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
