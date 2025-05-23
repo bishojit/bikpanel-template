@@ -127,7 +127,7 @@ const CreateEditProjectModal: React.FC<CreateEditProjectModalProps> = ({
             {projectData ? 'Update the details of your project.' : 'Fill in the details for your new project.'}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="flex-grow pr-6 -mr-6">
+        <ScrollArea className="flex-grow pr-6 -mr-6 min-h-0">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 py-2">
             <div>
               <Label htmlFor="name">Project Name</Label>

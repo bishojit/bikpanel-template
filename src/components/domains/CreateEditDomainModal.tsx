@@ -120,7 +120,7 @@ const CreateEditDomainModal: React.FC<CreateEditDomainModalProps> = ({
             {domainData ? 'Update the configuration for your domain.' : 'Fill in the details for your new domain.'}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="flex-grow pr-6 -mr-6">
+        <ScrollArea className="flex-grow pr-6 -mr-6 min-h-0">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 py-2">
             <div>
               <Label htmlFor="name">Domain Name</Label>

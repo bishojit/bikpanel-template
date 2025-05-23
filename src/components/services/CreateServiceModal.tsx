@@ -107,7 +107,7 @@ const CreateServiceModal: React.FC<CreateServiceModalProps> = ({
             Fill in the details for your new service.
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="flex-grow pr-6 -mr-6">
+        <ScrollArea className="flex-grow pr-6 -mr-6 min-h-0">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 py-2">
             <div>
               <Label htmlFor="name">Service Name</Label>
