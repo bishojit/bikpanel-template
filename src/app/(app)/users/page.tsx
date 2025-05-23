@@ -62,9 +62,9 @@ export default function UsersPage() {
           </div>
 
           {/* User Table */}
-          <div> {/* Removed max-h-[600px] overflow-y-auto */}
+          <div>
             <Table>
-              <TableHeader className="sticky top-0 bg-card z-10">
+              <TableHeader className="sticky top-16 bg-card z-10"> {/* Changed top-0 to top-16 */}
                 <TableRow>
                   <TableHead>Username</TableHead>
                   <TableHead>Email</TableHead>
