@@ -62,7 +62,7 @@ export default function UsersPage() {
           </div>
 
           {/* User Table */}
-          <div className="max-h-[600px] overflow-y-auto"> {/* Added for scrollability */}
+          <div> {/* Removed max-h-[600px] overflow-y-auto */}
             <Table>
               <TableHeader className="sticky top-0 bg-card z-10">
                 <TableRow>
