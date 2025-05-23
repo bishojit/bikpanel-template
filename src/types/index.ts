@@ -1,3 +1,4 @@
+
 export type Role = "admin" | "user" | "operator";
 
 export interface User {
@@ -19,19 +20,24 @@ export interface Project {
   id: string;
   name: string;
   description?: string;
-  status: "development" | "live" | "archived" | "error" | "paused"; // Added 'paused'
-  users: string[]; // User IDs - form will handle as comma-separated string in Textarea
-  services: string[]; // Service IDs - form will handle as comma-separated string in Textarea
-  envVars: EnvironmentVariable[]; // Changed for easier form handling
+  status: "development" | "live" | "archived" | "error" | "paused";
+  users: string[];
+  services: string[];
+  envVars: EnvironmentVariable[];
 }
 
 export interface Service {
   id: string;
   name: string;
-  template: string;
-  status: "running" | "stopped" | "error" | "starting" | "stopping";
-  uptime?: string; // Could be a duration string or timestamp
-  // Add other service-specific properties
+  template: "PHP" | "Node.js" | "MySQL" | "Redis" | "PostgreSQL" | "Custom";
+  status: "running" | "stopped" | "error" | "starting" | "stopping" | "deploying" | "paused";
+  uptime?: string; // e.g., "48 days", "N/A"
+  lastDeployed?: Date | string;
+  cpuUsage?: number; // percentage, e.g., 25
+  ramUsage?: number; // MB, e.g., 512
+  diskUsage?: number; // GB, e.g., 10
+  linkedProject?: string; // Project ID
+  notes?: string;
 }
 
 export interface Domain {
@@ -51,3 +57,4 @@ export interface NavItem {
   children?: NavItem[];
   roles?: Role[]; // For RBAC
 }
+
