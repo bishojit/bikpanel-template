@@ -40,12 +40,37 @@ export interface Service {
   notes?: string;
 }
 
+export type DnsRecordType = "A" | "CNAME" | "TXT" | "MX";
+export type SslStatusType = "valid" | "expiring_soon" | "expired" | "pending" | "error" | "disabled";
+
+export interface DnsRecord {
+  id: string;
+  type: DnsRecordType;
+  name: string; // Typically '@' for root, or subdomain
+  value: string;
+  ttl?: number; // Default to a common value like 3600
+}
 export interface Domain {
   id: string;
   name: string;
-  sslStatus: "valid" | "expiring_soon" | "expired" | "pending" | "error";
-  dnsRecords: { type: "A" | "CNAME" | "TXT" | "MX"; name: string; value: string; ttl: number }[];
+  sslStatus: SslStatusType;
+  autoSsl: boolean;
+  primaryDnsRecord: { // Simplified for table display and basic form
+    type: "A" | "CNAME";
+    value: string;
+  };
+  // fullDnsRecords: DnsRecord[]; // For more advanced DNS management later
+  // redirections: Redirect[]; // For redirection management later
+  lastValidated?: Date | string;
 }
+
+export interface Redirect {
+  id: string;
+  sourcePath: string;
+  targetUrl: string;
+  statusCode: 301 | 302;
+}
+
 
 export interface NavItem {
   title: string;
@@ -57,4 +82,3 @@ export interface NavItem {
   children?: NavItem[];
   roles?: Role[]; // For RBAC
 }
-
