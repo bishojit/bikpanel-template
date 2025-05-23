@@ -15,13 +15,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 
 const resetPasswordFormSchema = z.object({
   newPassword: z.string().min(8, { message: "Password must be at least 8 characters." }),
   confirmPassword: z.string(),
-  otp: z.string().min(6, { message: "OTP must be 6 digits." }).max(6, { message: "OTP must be 6 digits."}), // Assuming 6-digit OTP
+  otp: z.string().min(6, { message: "OTP must be 6 digits." }).max(6, { message: "OTP must be 6 digits."}),
+  token: z.string().optional(), // Token might be part of the form if not handled globally
 }).refine((data) => data.newPassword === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -29,11 +30,14 @@ const resetPasswordFormSchema = z.object({
 
 type ResetPasswordFormValues = z.infer<typeof resetPasswordFormSchema>;
 
-export function ResetPasswordForm() {
+interface ResetPasswordFormProps {
+  token: string | null;
+}
+
+export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   const { toast } = useToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  // TODO: Get token from URL query params: const searchParams = useSearchParams(); const token = searchParams.get('token');
 
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordFormSchema),
@@ -41,14 +45,21 @@ export function ResetPasswordForm() {
       newPassword: "",
       confirmPassword: "",
       otp: "",
+      token: token || "",
     },
   });
 
+  useEffect(() => {
+    if (token) {
+      form.setValue("token", token);
+    }
+  }, [token, form]);
+
   async function onSubmit(values: ResetPasswordFormValues) {
     setIsLoading(true);
-    // TODO: Implement actual reset password logic, including token validation and OTP
-    console.log("Reset password form submitted:", values);
-    // console.log("Token:", token); 
+    // Actual reset password logic, including token validation and OTP, would be implemented here.
+    console.log("Reset password form submitted (simulated):", values);
+    // The 'token' is available in `values.token` or directly via the `token` prop.
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
 
     toast({
@@ -62,6 +73,9 @@ export function ResetPasswordForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Hidden field for the token if you prefer to submit it with the form */}
+        {/* <FormField control={form.control} name="token" render={({ field }) => <Input type="hidden" {...field} />} /> */}
+        
         <FormField
           control={form.control}
           name="newPassword"

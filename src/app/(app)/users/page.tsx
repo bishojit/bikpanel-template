@@ -32,14 +32,20 @@ const generateDemoUsers = (count: number): UserType[] => {
 
 
 export default function UsersPage() {
-  // TODO: Implement RBAC check
-  // TODO: Implement actual data fetching, search, filter, pagination
+  // RBAC checks would be implemented here in a real application.
+  // Actual data fetching, search, filter, pagination are future enhancements beyond demo data.
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [demoUsers, setDemoUsers] = useState<UserType[]>([]);
+  const [searchTerm, setSearchTerm] = useState(''); // Basic search state
 
   useEffect(() => {
     setDemoUsers(generateDemoUsers(205));
   }, []);
+
+  const filteredUsers = demoUsers.filter(user => 
+    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
 
   return (
@@ -56,12 +62,17 @@ export default function UsersPage() {
       <Card>
         <CardHeader>
           <CardTitle>Users List</CardTitle>
-          <CardDescription>Manage all users in the system. {demoUsers.length > 0 ? `Showing ${demoUsers.length} users.` : 'Loading users...'}</CardDescription>
+          <CardDescription>Manage all users in the system. {filteredUsers.length > 0 ? `Showing ${filteredUsers.length} users.` : 'Loading users or no matches found...'}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Filters and Search */}
           <div className="flex items-center gap-4">
-            <Input placeholder="Search users..." className="max-w-sm" />
+            <Input 
+              placeholder="Search users by username or email..." 
+              className="max-w-sm" 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
             {/* Add filter dropdowns here later */}
           </div>
 
@@ -77,7 +88,7 @@ export default function UsersPage() {
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow></TableHeader>
               <TableBody>
-                {demoUsers.map((user) => (
+                {filteredUsers.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell className="font-medium">{user.username}</TableCell>
                     <TableCell>{user.email}</TableCell>
@@ -97,6 +108,13 @@ export default function UsersPage() {
                     </TableCell>
                   </TableRow>
                 ))}
+                 {filteredUsers.length === 0 && demoUsers.length > 0 && (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center text-muted-foreground">
+                      No users match your search criteria.
+                    </TableCell>
+                  </TableRow>
+                )}
                  {demoUsers.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center text-muted-foreground">

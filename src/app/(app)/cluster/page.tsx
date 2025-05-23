@@ -2,8 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Network } from "lucide-react";
 
 export default function ClusterPage() {
-  // TODO: Implement RBAC check
-  // TODO: Implement Cluster Management UI (Add Node, Node List, Sync Status, Load Balancer Rules, Remove Node)
+  // RBAC checks would be implemented here in a real application
+  // Cluster Management UI (Add Node, Node List, Sync Status, Load Balancer Rules, Remove Node) is pending implementation.
   return (
     <div className="container mx-auto py-8">
       <div className="flex items-center gap-3 mb-8">

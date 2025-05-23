@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default function SettingsPage() {
-  // TODO: Implement RBAC check
-  // TODO: Implement Server Settings UI (Docker Global Settings, Logging, Restart, GitHub, Branding, Notifications, Auth, License, Cluster Setup)
+  // RBAC checks would be implemented here in a real application.
+  // Server Settings UI is structured with links to sub-pages. Detailed implementation for each sub-page is separate.
   
   const settingsCategories = [
     { title: "General Settings", href: "/settings/general", description: "Basic application configurations." },

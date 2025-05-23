@@ -28,7 +28,7 @@ const chartConfig = {
 
 
 export default function DashboardPage() {
-  // TODO: Implement RBAC checks for quick actions and other elements
+  // RBAC checks for quick actions and other elements would be implemented in a real application.
 
   return (
     <div className="container mx-auto py-8">
@@ -105,7 +105,7 @@ export default function DashboardPage() {
             <CardTitle>Server Warnings / Alerts</CardTitle>
           </CardHeader>
           <CardContent>
-            {/* TODO: Implement alerts list - use Toast for real-time, this is for persistent ones */}
+            {/* Real-time alerts might use Toasts; this list is for persistent ones. Alerts list implementation is pending. */}
             <ul className="space-y-2">
               <li className="p-3 rounded-md bg-destructive/10 text-destructive-foreground border border-destructive">High CPU usage on server-01</li>
               <li className="p-3 rounded-md bg-muted text-muted-foreground">Disk space running low on backup-volume</li>
@@ -117,7 +117,7 @@ export default function DashboardPage() {
             <CardTitle>Activity Feed / Notifications</CardTitle>
           </CardHeader>
           <CardContent>
-            {/* TODO: Implement activity feed */}
+            {/* Activity feed implementation is pending. */}
             <ul className="space-y-2 text-sm">
               <li>User 'john.doe' logged in.</li>
               <li>Project 'WebApp' deployed successfully.</li>

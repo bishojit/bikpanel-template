@@ -9,12 +9,14 @@ export default function LoginPage() {
       <div className="w-full p-8 space-y-6 rounded-lg shadow-xl bg-card border border-border">
         <h1 className="text-2xl font-bold text-center text-foreground">Welcome Back</h1>
         <LoginForm />
-        <div className="text-sm text-center">
+        <div className="flex justify-between text-sm">
           <Link href="/forgot-password" className="font-medium text-primary hover:underline">
             Forgot Password?
           </Link>
+          <Link href="/signup" className="font-medium text-primary hover:underline">
+            Create Account
+          </Link>
         </div>
-        {/* TODO: Add link to Sign Up page if applicable */}
       </div>
     </div>
   );

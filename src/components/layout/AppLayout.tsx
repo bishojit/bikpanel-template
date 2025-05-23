@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation"; // Added useRouter
 import type { ReactNode } from "react";
 import {
   SidebarProvider,
@@ -31,25 +31,40 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Logo } from "@/components/shared/Logo";
 import { siteConfig } from "@/config/site";
 import type { NavItem } from "@/types";
-import { ChevronDown, LogOut, UserCircle } from "lucide-react";
-// import { useAuth } from "@/hooks/useAuth"; // Placeholder for auth hook
+import { ChevronDown, LogOut, UserCircle, Settings } from "lucide-react"; // Added Settings icon
+
 
 interface AppLayoutProps {
   children: ReactNode;
 }
 
+// Mock user and logout for prototype purposes
+const mockUser = { 
+  name: "Admin User", 
+  email: "admin@example.com", 
+  avatar: "https://placehold.co/100x100.png?text=AU",
+  // role: "admin" // Role would be used for RBAC in a real app
+};
+
 export function AppLayout({ children }: AppLayoutProps) {
   const pathname = usePathname();
-  // const { user, logout } = useAuth(); // Placeholder
-  const user = { name: "Admin User", email: "admin@example.com", role: "admin", avatar: "https://placehold.co/100x100.png" }; // Placeholder user
-  const logout = () => { console.log("Logout clicked"); window.location.href = "/login"; }; // Placeholder logout
+  const router = useRouter();
 
-  // TODO: Implement RBAC filtering for nav items based on user.role
-  const accessibleNavItems = siteConfig.sidebarNav; //.filter(item => item.roles?.includes(user.role));
+  const handleLogout = () => {
+    console.log("Logout clicked (simulated)");
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('mockAuthToken'); // Simulate clearing auth token
+    }
+    router.push("/login");
+  };
+
+  // RBAC filtering for nav items would be implemented in a real application
+  // based on user roles. For this prototype, all nav items are shown.
+  const accessibleNavItems = siteConfig.sidebarNav;
 
   const renderNavItem = (item: NavItem, index: number, isSubItem = false) => {
     const Icon = item.icon;
-    const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+    const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href || '---')); // ensure item.href is defined
 
     if (item.children && item.children.length > 0) {
       return (
@@ -57,7 +72,6 @@ export function AppLayout({ children }: AppLayoutProps) {
           <SidebarMenuButton
             isActive={isActive}
             className="justify-between"
-            // Implement open/close state for submenus if Radix Collapsible is used or similar
           >
             <span className="flex items-center gap-2">
               {Icon && <Icon />}
@@ -112,7 +126,6 @@ export function AppLayout({ children }: AppLayoutProps) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter className="group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:items-center">
-           {/* Placeholder: User info / logout */}
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
@@ -123,26 +136,31 @@ export function AppLayout({ children }: AppLayoutProps) {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative w-8 h-8 rounded-full">
                   <Avatar className="w-8 h-8">
-                    <AvatarImage src={user?.avatar} alt={user?.name || "User"} data-ai-hint="person avatar" />
-                    <AvatarFallback>{user?.name?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
+                    <AvatarImage src={mockUser?.avatar} alt={mockUser?.name || "User"} data-ai-hint="person avatar" />
+                    <AvatarFallback>{mockUser?.name?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user?.name}</p>
+                    <p className="text-sm font-medium leading-none">{mockUser?.name}</p>
                     <p className="text-xs leading-none text-muted-foreground">
-                      {user?.email}
+                      {mockUser?.email}
                     </p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push('/settings/general')}>
                   <UserCircle className="w-4 h-4 mr-2" />
-                  Profile
+                  Profile (Settings)
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={logout}>
+                 <DropdownMenuItem onClick={() => router.push('/settings')}>
+                  <Settings className="w-4 h-4 mr-2" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="w-4 h-4 mr-2" />
                   Log out
                 </DropdownMenuItem>

@@ -4,8 +4,8 @@ import { Combine, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 export default function DockerSettingsPage() {
-  // TODO: Implement RBAC check
-  // TODO: Implement Docker global settings UI (System Prune, Builder Cleanup, Image Cleanup buttons, etc.)
+  // RBAC checks would be implemented here in a real application.
+  // Docker global settings UI (System Prune, Builder Cleanup, Image Cleanup buttons, etc.) is partially implemented with placeholder buttons.
   return (
     <div className="container mx-auto py-8">
       <div className="flex items-center gap-3 mb-8">

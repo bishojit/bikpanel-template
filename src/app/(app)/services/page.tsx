@@ -2,8 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Server } from "lucide-react";
 
 export default function ServicesPage() {
-  // TODO: Implement RBAC check
-  // TODO: Implement Service Management UI (Grid/List, Create Service, Detail View with Tabs)
+  // RBAC checks would be implemented here in a real application.
+  // Service Management UI (Grid/List, Create Service, Detail View with Tabs) is pending implementation.
   return (
     <div className="container mx-auto py-8">
       <div className="flex items-center gap-3 mb-8">

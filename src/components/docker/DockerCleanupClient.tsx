@@ -11,7 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, CheckCircle, XCircle, HelpCircle } from "lucide-react";
+import { Loader2, CheckCircle, XCircle, HelpCircle, Trash2 } from "lucide-react"; // Added Trash2
 import { useToast } from "@/hooks/use-toast";
 
 const schema = z.object({
@@ -59,8 +59,8 @@ export function DockerCleanupClient() {
   };
 
   const handleConfirmCleanup = (type: string, item: string) => {
-    // TODO: Implement actual cleanup operation logic
-    console.log(`User confirmed cleanup for ${type}: ${item}`);
+    // Actual cleanup operation logic (e.g., calling an API to prune/remove items) would be implemented here.
+    console.log(`User confirmed cleanup for ${type}: ${item} (Simulated)`);
     toast({
       title: "Cleanup Action (Simulated)",
       description: `${item} (${type}) would be removed. This is a simulation.`,

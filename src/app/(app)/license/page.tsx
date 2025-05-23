@@ -1,9 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { KeyRound } from "lucide-react"; // Using KeyRound, consider a more specific icon
+import { KeyRound } from "lucide-react"; 
 
 export default function LicensePage() {
-  // TODO: Implement RBAC check
-  // TODO: Implement License Management UI (Upload, Info Display, Alerts, Feature Toggles)
+  // RBAC checks would be implemented here in a real application.
+  // License Management UI (Upload, Info Display, Alerts, Feature Toggles) is pending implementation.
   return (
     <div className="container mx-auto py-8">
       <div className="flex items-center gap-3 mb-8">

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation"; // Corrected import
+import { useRouter } from "next/navigation"; 
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
@@ -40,24 +40,28 @@ export function LoginForm() {
 
   async function onSubmit(values: LoginFormValues) {
     setIsLoading(true);
-    // TODO: Implement actual login logic
-    console.log("Login form submitted:", values);
+    // Actual login logic (e.g., API call to verify credentials) would be implemented here.
+    console.log("Login form submitted (simulated):", values);
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
 
-    // Example: on successful login
+    // For prototype: simulate successful login
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('mockAuthToken', 'loggedIn'); // Simulate setting an auth token
+    }
+
     toast({
       title: "Login Successful",
       description: "Welcome back!",
     });
-    router.push("/dashboard"); // Redirect to dashboard
+    router.push("/dashboard"); 
 
-    // Example: on failed login
+    // Example: on failed login (in a real app)
     // toast({
     //   variant: "destructive",
     //   title: "Login Failed",
     //   description: "Invalid email or password.",
     // });
-    setIsLoading(false);
+    // setIsLoading(false); // Would be set to false after actual API call
   }
 
   return (

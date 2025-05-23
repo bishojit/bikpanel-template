@@ -4,7 +4,7 @@ import { AlertCircle, Trash2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function DockerCleanupPage() {
-  // TODO: Implement RBAC check, only admin/operator should access
+  // RBAC checks (e.g. only admin/operator access) would be implemented here in a real application.
 
   return (
     <div className="container mx-auto py-8">

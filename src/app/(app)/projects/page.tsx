@@ -2,8 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Package } from "lucide-react";
 
 export default function ProjectsPage() {
-  // TODO: Implement RBAC check
-  // TODO: Implement Project Management UI (List, Create/Edit Form, Assign Users, Link Services, Env Vars)
+  // RBAC checks would be implemented here in a real application.
+  // Project Management UI (List, Create/Edit Form, Assign Users, Link Services, Env Vars) is pending implementation.
   return (
     <div className="container mx-auto py-8">
       <div className="flex items-center gap-3 mb-8">

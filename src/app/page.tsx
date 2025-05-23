@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation';
 
 export default function HomePage() {
-  // For now, redirect to login. Later, this could check auth status.
-  // TODO: Implement auth check and redirect to /dashboard if logged in.
+  // Current behavior redirects all users to login.
+  // A full auth check (e.g., checking session/token) and redirecting to /dashboard 
+  // if logged in would be implemented in a real application, likely using middleware or a layout check.
   redirect('/login');
   return null; // redirect() throws an error, so this won't be reached.
 }

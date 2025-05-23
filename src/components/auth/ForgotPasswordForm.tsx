@@ -36,8 +36,8 @@ export function ForgotPasswordForm() {
 
   async function onSubmit(values: ForgotPasswordFormValues) {
     setIsLoading(true);
-    // TODO: Implement actual forgot password logic
-    console.log("Forgot password form submitted:", values);
+    // Actual forgot password logic (e.g., API call) would be implemented here.
+    console.log("Forgot password form submitted (simulated):", values);
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
 
     toast({
