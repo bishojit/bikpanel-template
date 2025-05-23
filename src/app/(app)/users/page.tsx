@@ -3,12 +3,12 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Users, PlusCircle } from "lucide-react";
+import { Users, PlusCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import UserActions from "@/components/users/UserActions";
 import type { User as UserType } from "@/types"; 
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect, useMemo } from "react"; 
 import CreateUserModal from '@/components/auth/CreateUserModal'; 
 
 
@@ -30,23 +30,48 @@ const generateDemoUsers = (count: number): UserType[] => {
   return users;
 };
 
+const ITEMS_PER_PAGE = 50;
 
 export default function UsersPage() {
-  // RBAC checks would be implemented here in a real application.
-  // Actual data fetching, search, filter, pagination are future enhancements beyond demo data.
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [demoUsers, setDemoUsers] = useState<UserType[]>([]);
-  const [searchTerm, setSearchTerm] = useState(''); // Basic search state
+  const [allDemoUsers, setAllDemoUsers] = useState<UserType[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    setDemoUsers(generateDemoUsers(205));
+    // Generate users only on client-side to avoid hydration issues with Math.random()
+    setAllDemoUsers(generateDemoUsers(205));
   }, []);
 
-  const filteredUsers = demoUsers.filter(user => 
-    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = useMemo(() => {
+    return allDemoUsers.filter(user => 
+      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [allDemoUsers, searchTerm]);
 
+  const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
+
+  const paginatedUsers = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    return filteredUsers.slice(startIndex, endIndex);
+  }, [filteredUsers, currentPage]);
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+
+  const getShowingText = () => {
+    if (filteredUsers.length === 0) return "No users found.";
+    const startItem = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+    const endItem = Math.min(currentPage * ITEMS_PER_PAGE, filteredUsers.length);
+    return `Showing ${startItem}-${endItem} of ${filteredUsers.length} users.`;
+  }
 
   return (
     <div className="container mx-auto py-8">
@@ -62,21 +87,23 @@ export default function UsersPage() {
       <Card>
         <CardHeader>
           <CardTitle>Users List</CardTitle>
-          <CardDescription>Manage all users in the system. {filteredUsers.length > 0 ? `Showing ${filteredUsers.length} users.` : 'Loading users or no matches found...'}</CardDescription>
+          <CardDescription>
+            Manage all users in the system. {getShowingText()}
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Filters and Search */}
           <div className="flex items-center gap-4">
             <Input 
               placeholder="Search users by username or email..." 
               className="max-w-sm" 
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1); // Reset to first page on search
+              }}
             />
-            {/* Add filter dropdowns here later */}
           </div>
 
-          {/* User Table */}
           <div>
             <Table>
               <TableHeader className="sticky top-16 bg-card z-10"><TableRow>
@@ -88,7 +115,7 @@ export default function UsersPage() {
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow></TableHeader>
               <TableBody>
-                {filteredUsers.map((user) => (
+                {paginatedUsers.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell className="font-medium">{user.username}</TableCell>
                     <TableCell>{user.email}</TableCell>
@@ -108,14 +135,14 @@ export default function UsersPage() {
                     </TableCell>
                   </TableRow>
                 ))}
-                 {filteredUsers.length === 0 && demoUsers.length > 0 && (
+                 {paginatedUsers.length === 0 && allDemoUsers.length > 0 && (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center text-muted-foreground">
                       No users match your search criteria.
                     </TableCell>
                   </TableRow>
                 )}
-                 {demoUsers.length === 0 && (
+                 {allDemoUsers.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center text-muted-foreground">
                       Loading demo users...
@@ -125,9 +152,35 @@ export default function UsersPage() {
               </TableBody>
             </Table>
           </div>
+          {totalPages > 1 && (
+            <div className="flex items-center justify-end space-x-2 pt-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft className="mr-2 h-4 w-4" />
+                Previous
+              </Button>
+              <span className="text-sm text-muted-foreground">
+                Page {currentPage} of {totalPages}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                Next
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
       <CreateUserModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />
     </div>
   );
 }
+
