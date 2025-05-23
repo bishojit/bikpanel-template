@@ -1,8 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Combine, Trash2, FileText } from "lucide-react";
-import Link from "next/link";
+import { Combine, Trash2, FileText, AlertCircle } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -11,6 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { DockerCleanupClient } from "@/components/docker/DockerCleanupClient";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 
 export default function DockerSettingsPage() {
@@ -23,7 +24,7 @@ export default function DockerSettingsPage() {
       <Card className="mb-6">
         <CardHeader>
           <CardTitle>Global Docker Configuration</CardTitle>
-          <CardDescription>Manage Docker system-wide settings and perform cleanup operations.</CardDescription>
+          <CardDescription>Manage Docker system-wide settings and perform general cleanup operations.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
@@ -42,17 +43,37 @@ export default function DockerSettingsPage() {
           </div>
           
           <div>
-            <h3 className="text-sm font-medium mb-1.5">Maintenance Operations</h3>
+            <h3 className="text-sm font-medium mb-1.5">General Maintenance Operations</h3>
             <div className="flex flex-wrap gap-2">
               <Button variant="outline" size="sm"><Trash2 className="mr-1.5 h-3.5 w-3.5" /> System Prune</Button>
               <Button variant="outline" size="sm"><Trash2 className="mr-1.5 h-3.5 w-3.5" /> Builder Cleanup</Button>
               <Button variant="outline" size="sm"><Trash2 className="mr-1.5 h-3.5 w-3.5" /> Image Cleanup</Button>
             </div>
+             <p className="text-xs text-muted-foreground mt-1.5">These actions perform broad cleanups. For more targeted suggestions, use the Intelligent Cleanup below.</p>
           </div>
+        </CardContent>
+      </Card>
 
-          <p className="text-xs text-muted-foreground pt-2">
-            For intelligent, AI-powered cleanup suggestions, visit the <Link href="/docker/cleanup" className="text-primary hover:underline">Docker Cleanup</Link> page.
-          </p>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Intelligent Docker Cleanup</CardTitle>
+          <CardDescription>
+            Provide lists of your current Docker images, containers, and volumes.
+            The AI will analyze them and suggest items that might be obsolete and safe to remove.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <DockerCleanupClient />
+           <Alert variant="default" className="bg-accent/10 border-accent text-accent-foreground text-xs mt-4">
+            <AlertCircle className="h-3.5 w-3.5 !text-accent" />
+            <AlertTitle className="text-sm">Important Note</AlertTitle>
+            <AlertDescription>
+              The AI provides suggestions based on the names and simulated context. 
+              Always review suggestions carefully before performing any cleanup operations. 
+              BikPanel Lite is not responsible for any data loss due to incorrect cleanup.
+              You must confirm each operation.
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
 

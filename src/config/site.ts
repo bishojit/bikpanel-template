@@ -10,7 +10,7 @@ import {
   Combine,
   KeyRound,
   Network,
-  Trash2,
+  // Trash2, // Removed as it's no longer a top-level item
   ShieldAlert,
   Brush,
   Github,
@@ -58,12 +58,12 @@ export const siteConfig = {
       icon: Globe,
       roles: ["admin", "operator"],
     },
-    {
-      title: "Docker Cleanup",
-      href: "/docker/cleanup",
-      icon: Trash2,
-      roles: ["admin", "operator"],
-    },
+    // { // Removed standalone Docker Cleanup from sidebar
+    //   title: "Docker Cleanup",
+    //   href: "/docker/cleanup",
+    //   icon: Trash2,
+    //   roles: ["admin", "operator"],
+    // },
     {
       title: "Settings",
       href: "/settings",
@@ -93,4 +93,3 @@ export const siteConfig = {
     },
   ] as NavItem[],
 };
-
