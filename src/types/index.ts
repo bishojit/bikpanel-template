@@ -9,14 +9,20 @@ export interface User {
   lastLogin?: Date | string;
 }
 
+export interface EnvironmentVariable {
+  id: string; // For unique key in React lists and managing edits/deletes
+  key: string;
+  value: string;
+}
+
 export interface Project {
   id: string;
   name: string;
   description?: string;
-  status: "development" | "live" | "archived" | "error";
-  users: string[]; // User IDs
-  services: string[]; // Service IDs
-  envVars: Record<string, string>;
+  status: "development" | "live" | "archived" | "error" | "paused"; // Added 'paused'
+  users: string[]; // User IDs - form will handle as comma-separated string in Textarea
+  services: string[]; // Service IDs - form will handle as comma-separated string in Textarea
+  envVars: EnvironmentVariable[]; // Changed for easier form handling
 }
 
 export interface Service {
