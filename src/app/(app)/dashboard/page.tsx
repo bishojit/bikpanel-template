@@ -48,12 +48,12 @@ export default function DashboardPage() {
       <h1 className="text-xl font-bold mb-6 text-foreground">Dashboard Overview</h1>
 
       {/* Updated Resource Metric Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         <ResourceMetricCard
           title="CPU"
           iconComponent={Cpu}
           valueDisplay="34.28%"
-          ringPercentage={34.28}
+          // ringPercentage={34.28} // Removed
           sparklineData={cpuSparkline}
           footerInfo1="Load 0.04, 0.02, 0.00"
           themeName="orange"
@@ -62,7 +62,7 @@ export default function DashboardPage() {
           title="Memory"
           iconComponent={MemoryStick}
           valueDisplay="24.47%"
-          ringPercentage={24.47}
+          // ringPercentage={24.47} // Removed
           sparklineData={memorySparkline}
           footerInfo1="Used 3.4 GB / 30 GB"
           themeName="blue"
@@ -71,7 +71,7 @@ export default function DashboardPage() {
           title="Disk"
           iconComponent={Disc3}
           valueDisplay="12.75%"
-          ringPercentage={12.75}
+          // ringPercentage={12.75} // Removed
           sparklineData={diskSparkline}
           footerInfo1="Used 39.7 GB / 1024 GB"
           themeName="green"
@@ -80,7 +80,7 @@ export default function DashboardPage() {
           title="Network"
           iconComponent={Gauge}
           valueDisplay="0.24 / 2.75 Mbps"
-          ringPercentage={10} // (0.24 / 2.75) * 100 is ~8.7%, use a slightly more visible value for demo
+          // ringPercentage={10} // Removed
           sparklineData={networkSparkline}
           footerInfo1="0.24 MB"
           footerInfo2="2.75 MB"
@@ -90,10 +90,10 @@ export default function DashboardPage() {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Cpu className="w-4 h-4" /> CPU & RAM Usage</CardTitle>
+            <CardTitle className="flex items-center gap-2"><Cpu className="w-3.5 h-3.5" /> CPU & RAM Usage</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[250px] w-full">
@@ -114,7 +114,7 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><HardDrive className="w-4 h-4" /> Disk & Network Usage</CardTitle>
+            <CardTitle className="flex items-center gap-2"><HardDrive className="w-3.5 h-3.5" /> Disk & Network Usage</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[250px] w-full">
@@ -148,7 +148,7 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <Card>
           <CardHeader>
             <CardTitle>Server Warnings / Alerts</CardTitle>
@@ -176,3 +176,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
