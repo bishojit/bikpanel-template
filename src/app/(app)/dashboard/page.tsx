@@ -3,12 +3,14 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Cpu, HardDrive, Users, Package, Server as ServerIcon, AlertTriangle, Globe } from "lucide-react";
-import { KpiCard } from "@/components/shared/KpiCard";
+import { Cpu, HardDrive, Users, Package, Server as ServerIcon, AlertTriangle, Globe, MemoryStick, Disc3, Gauge, ArrowDownToLine, ArrowUpFromLine } from "lucide-react"; // Added MemoryStick, Disc3, Gauge, ArrowDownToLine, ArrowUpFromLine
+// Removed KpiCard import
 import {
   ChartContainer,
+  ChartLegendContent, // Keep if used by larger charts, otherwise remove
 } from "@/components/ui/chart";
 import { Bar, Line, LineChart, CartesianGrid, XAxis, YAxis, Tooltip as RechartsTooltip, Legend as RechartsLegend, BarChart as RechartsBarChart } from "recharts";
+import { ResourceMetricCard } from '@/components/dashboard/ResourceMetricCard'; // Import new card
 
 // Sample data for charts - replace with real data fetching
 const serverMetricsData = [
@@ -27,26 +29,74 @@ const chartConfig = {
   network: { label: "Network (Mbps)", color: "hsl(var(--chart-4))" },
 };
 
+const generateSparklineData = () => {
+  return Array.from({ length: 10 }, (_, i) => ({
+    name: `t${i}`,
+    value: Math.floor(Math.random() * 80) + 10,
+  }));
+};
+
 
 export default function DashboardPage() {
-  return (
-    <div className="container mx-auto py-6"> {/* py-8 to py-6 */}
-      <h1 className="text-xl font-bold mb-6 text-foreground">Dashboard Overview</h1> {/* text-2xl to text-xl */}
+  const cpuSparkline = generateSparklineData();
+  const memorySparkline = generateSparklineData();
+  const diskSparkline = generateSparklineData();
+  const networkSparkline = generateSparklineData();
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"> {/* gap-6 mb-8 to gap-4 mb-6 */}
-        <KpiCard title="Total Users" value="1,234" icon={<Users className="w-5 h-5 text-primary" />} /> {/* w-6 h-6 to w-5 h-5 */}
-        <KpiCard title="Projects" value="56" icon={<Package className="w-5 h-5 text-primary" />} /> {/* w-6 h-6 to w-5 h-5 */}
-        <KpiCard title="Services Running" value="102" icon={<ServerIcon className="w-5 h-5 text-primary" />} /> {/* w-6 h-6 to w-5 h-5 */}
-        <KpiCard title="Server Alerts" value="3" icon={<AlertTriangle className="w-5 h-5 text-destructive" />} variant="destructive" /> {/* w-6 h-6 to w-5 h-5 */}
+  return (
+    <div className="container mx-auto py-6">
+      <h1 className="text-xl font-bold mb-6 text-foreground">Dashboard Overview</h1>
+
+      {/* Updated Resource Metric Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <ResourceMetricCard
+          title="CPU"
+          iconComponent={Cpu}
+          valueDisplay="34.28%"
+          ringPercentage={34.28}
+          sparklineData={cpuSparkline}
+          footerInfo1="Load 0.04, 0.02, 0.00"
+          themeName="orange"
+        />
+        <ResourceMetricCard
+          title="Memory"
+          iconComponent={MemoryStick}
+          valueDisplay="24.47%"
+          ringPercentage={24.47}
+          sparklineData={memorySparkline}
+          footerInfo1="Used 3.4 GB / 30 GB"
+          themeName="blue"
+        />
+        <ResourceMetricCard
+          title="Disk"
+          iconComponent={Disc3}
+          valueDisplay="12.75%"
+          ringPercentage={12.75}
+          sparklineData={diskSparkline}
+          footerInfo1="Used 39.7 GB / 1024 GB"
+          themeName="green"
+        />
+        <ResourceMetricCard
+          title="Network"
+          iconComponent={Gauge}
+          valueDisplay="0.24 / 2.75 Mbps"
+          ringPercentage={10} // (0.24 / 2.75) * 100 is ~8.7%, use a slightly more visible value for demo
+          sparklineData={networkSparkline}
+          footerInfo1="0.24 MB"
+          footerInfo2="2.75 MB"
+          footerIcon1={ArrowDownToLine}
+          footerIcon2={ArrowUpFromLine}
+          themeName="purple"
+        />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6"> {/* gap-6 mb-8 to gap-4 mb-6 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Cpu className="w-4 h-4" /> CPU & RAM Usage</CardTitle> {/* w-5 h-5 to w-4 h-4 */}
+            <CardTitle className="flex items-center gap-2"><Cpu className="w-4 h-4" /> CPU & RAM Usage</CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-[250px] w-full"> {/* h-[300px] to h-[250px] */}
+            <ChartContainer config={chartConfig} className="h-[250px] w-full">
               <LineChart data={serverMetricsData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={10}/>
@@ -64,10 +114,10 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><HardDrive className="w-4 h-4" /> Disk & Network Usage</CardTitle> {/* w-5 h-5 to w-4 h-4 */}
+            <CardTitle className="flex items-center gap-2"><HardDrive className="w-4 h-4" /> Disk & Network Usage</CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-[250px] w-full"> {/* h-[300px] to h-[250px] */}
+            <ChartContainer config={chartConfig} className="h-[250px] w-full">
               <RechartsBarChart data={serverMetricsData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={10}/>
@@ -86,27 +136,27 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <Card className="mb-6"> {/* mb-8 to mb-6 */}
+      <Card className="mb-6">
         <CardHeader>
           <CardTitle>Quick Actions</CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-wrap gap-2"> {/* gap-4 to gap-2 */}
-          <Button variant="outline" size="sm"><ServerIcon className="mr-1.5 h-3.5 w-3.5" /> Deploy Service</Button> {/* Button size sm, icon size adjusted */}
+        <CardContent className="flex flex-wrap gap-2">
+          <Button variant="outline" size="sm"><ServerIcon className="mr-1.5 h-3.5 w-3.5" /> Deploy Service</Button>
           <Button variant="outline" size="sm"><Globe className="mr-1.5 h-3.5 w-3.5" /> Add Domain</Button>
           <Button variant="outline" size="sm"><Users className="mr-1.5 h-3.5 w-3.5" /> Add User</Button>
           <Button variant="destructive" size="sm"><AlertTriangle className="mr-1.5 h-3.5 w-3.5" /> Restart Server</Button>
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> {/* gap-6 to gap-4 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
             <CardTitle>Server Warnings / Alerts</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              <li className="p-2 rounded-md bg-destructive/10 text-destructive border border-destructive text-sm">High CPU usage on server-01</li> {/* p-3 to p-2, added text-sm */}
-              <li className="p-2 rounded-md bg-muted text-muted-foreground text-sm">Disk space running low on backup-volume</li> {/* p-3 to p-2, added text-sm */}
+              <li className="p-2 rounded-md bg-destructive/10 text-destructive border border-destructive text-sm">High CPU usage on server-01</li>
+              <li className="p-2 rounded-md bg-muted text-muted-foreground text-sm">Disk space running low on backup-volume</li>
             </ul>
           </CardContent>
         </Card>
@@ -115,7 +165,7 @@ export default function DashboardPage() {
             <CardTitle>Activity Feed / Notifications</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-1 text-xs"> {/* space-y-2 to space-y-1, text-sm to text-xs */}
+            <ul className="space-y-1 text-xs">
               <li>User 'john.doe' logged in.</li>
               <li>Project 'WebApp' deployed successfully.</li>
               <li>Service 'RedisCache' restarted.</li>
