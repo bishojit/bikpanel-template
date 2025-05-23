@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,9 +37,8 @@ export function ForgotPasswordForm() {
 
   async function onSubmit(values: ForgotPasswordFormValues) {
     setIsLoading(true);
-    // Actual forgot password logic (e.g., API call) would be implemented here.
     console.log("Forgot password form submitted (simulated):", values);
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000)); 
 
     toast({
       title: "Password Reset Link Sent",
@@ -50,7 +50,7 @@ export function ForgotPasswordForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4"> {/* space-y-6 to space-y-4 */}
         <FormField
           control={form.control}
           name="email"
@@ -65,7 +65,7 @@ export function ForgotPasswordForm() {
           )}
         />
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />} {/* Icon size and margin adjusted */}
           Send Reset Link
         </Button>
       </form>

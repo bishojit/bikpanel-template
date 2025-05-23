@@ -44,6 +44,7 @@ export default function UsersPage() {
   }, []);
 
   const filteredUsers = useMemo(() => {
+    if (!allDemoUsers) return [];
     return allDemoUsers.filter(user => 
       user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -74,14 +75,14 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-3">
-          <Users className="w-8 h-8 text-primary" />
-          <h1 className="text-3xl font-bold text-foreground">User Management</h1>
+    <div className="container mx-auto py-6"> {/* py-8 to py-6 */}
+      <div className="flex items-center justify-between mb-6"> {/* mb-8 to mb-6 */}
+        <div className="flex items-center gap-2"> {/* gap-3 to gap-2 */}
+          <Users className="w-7 h-7 text-primary" /> {/* w-8 h-8 to w-7 h-7 */}
+          <h1 className="text-2xl font-bold text-foreground">User Management</h1> {/* text-3xl to text-2xl */}
         </div>
-        <Button onClick={() => setIsCreateModalOpen(true)}>
-          <PlusCircle className="mr-2 h-4 w-4" /> Create User
+        <Button onClick={() => setIsCreateModalOpen(true)} size="sm"> {/* Added size="sm" */}
+          <PlusCircle className="mr-1.5 h-3.5 w-3.5" /> Create User {/* Icon size adjusted */}
         </Button>
       </div>
       <Card>
@@ -91,11 +92,11 @@ export default function UsersPage() {
             Manage all users in the system. {getShowingText()}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center gap-4">
+        <CardContent className="space-y-3"> {/* space-y-4 to space-y-3 */}
+          <div className="flex items-center gap-2"> {/* gap-4 to gap-2 */}
             <Input 
               placeholder="Search users by username or email..." 
-              className="max-w-sm" 
+              className="max-w-xs"  // max-w-sm to max-w-xs
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -106,14 +107,16 @@ export default function UsersPage() {
 
           <div>
             <Table>
-              <TableHeader className="sticky top-16 bg-card z-10"><TableRow>
+              <TableHeader className="sticky top-14 bg-card z-10"> {/* top-16 to top-14 (due to header height change) */}
+                <TableRow>
                   <TableHead>Username</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Role</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Last Login</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
-                </TableRow></TableHeader>
+                </TableRow>
+              </TableHeader>
               <TableBody>
                 {paginatedUsers.map((user) => (
                   <TableRow key={user.id}>
@@ -121,7 +124,7 @@ export default function UsersPage() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.role.charAt(0).toUpperCase() + user.role.slice(1)}</TableCell>
                     <TableCell>
-                       <span className={`px-2 py-1 text-xs rounded-full ${
+                       <span className={`px-1.5 py-0.5 text-xs rounded-full ${ // px-2 py-1 to px-1.5 py-0.5
                         user.status === 'active' ? 'bg-green-500/20 text-green-700 dark:text-green-400' :
                         user.status === 'inactive' ? 'bg-yellow-500/20 text-yellow-700 dark:text-yellow-400' :
                         'bg-red-500/20 text-red-700 dark:text-red-400'
@@ -153,17 +156,17 @@ export default function UsersPage() {
             </Table>
           </div>
           {totalPages > 1 && (
-            <div className="flex items-center justify-end space-x-2 pt-4">
+            <div className="flex items-center justify-end space-x-1 pt-3"> {/* space-x-2 pt-4 to space-x-1 pt-3 */}
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handlePreviousPage}
                 disabled={currentPage === 1}
               >
-                <ChevronLeft className="mr-2 h-4 w-4" />
+                <ChevronLeft className="mr-1 h-3.5 w-3.5" /> {/* mr-2 h-4 w-4 to mr-1 h-3.5 w-3.5 */}
                 Previous
               </Button>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-xs text-muted-foreground"> {/* text-sm to text-xs */}
                 Page {currentPage} of {totalPages}
               </span>
               <Button
@@ -173,7 +176,7 @@ export default function UsersPage() {
                 disabled={currentPage === totalPages}
               >
                 Next
-                <ChevronRight className="ml-2 h-4 w-4" />
+                <ChevronRight className="ml-1 h-3.5 w-3.5" /> {/* ml-2 h-4 w-4 to ml-1 h-3.5 w-3.5 */}
               </Button>
             </div>
           )}
@@ -183,4 +186,3 @@ export default function UsersPage() {
     </div>
   );
 }
-

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,87 +29,84 @@ const chartConfig = {
 
 
 export default function DashboardPage() {
-  // RBAC checks for quick actions and other elements would be implemented in a real application.
-
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8 text-foreground">Dashboard Overview</h1>
+    <div className="container mx-auto py-6"> {/* py-8 to py-6 */}
+      <h1 className="text-2xl font-bold mb-6 text-foreground">Dashboard Overview</h1> {/* text-3xl mb-8 to text-2xl mb-6 */}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <KpiCard title="Total Users" value="1,234" icon={<Users className="w-6 h-6 text-primary" />} />
-        <KpiCard title="Projects" value="56" icon={<Package className="w-6 h-6 text-primary" />} />
-        <KpiCard title="Services Running" value="102" icon={<ServerIcon className="w-6 h-6 text-primary" />} />
-        <KpiCard title="Server Alerts" value="3" icon={<AlertTriangle className="w-6 h-6 text-destructive" />} variant="destructive" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"> {/* gap-6 mb-8 to gap-4 mb-6 */}
+        <KpiCard title="Total Users" value="1,234" icon={<Users className="w-5 h-5 text-primary" />} /> {/* w-6 h-6 to w-5 h-5 */}
+        <KpiCard title="Projects" value="56" icon={<Package className="w-5 h-5 text-primary" />} /> {/* w-6 h-6 to w-5 h-5 */}
+        <KpiCard title="Services Running" value="102" icon={<ServerIcon className="w-5 h-5 text-primary" />} /> {/* w-6 h-6 to w-5 h-5 */}
+        <KpiCard title="Server Alerts" value="3" icon={<AlertTriangle className="w-5 h-5 text-destructive" />} variant="destructive" /> {/* w-6 h-6 to w-5 h-5 */}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6"> {/* gap-6 mb-8 to gap-4 mb-6 */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Cpu className="w-5 h-5" /> CPU & RAM Usage</CardTitle>
+            <CardTitle className="flex items-center gap-2"><Cpu className="w-4 h-4" /> CPU & RAM Usage</CardTitle> {/* w-5 h-5 to w-4 h-4 */}
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px] w-full">
+            <ChartContainer config={chartConfig} className="h-[250px] w-full"> {/* h-[300px] to h-[250px] */}
               <LineChart data={serverMetricsData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
-                <YAxis stroke="hsl(var(--muted-foreground))" />
+                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={10}/>
+                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={10}/>
                 <RechartsTooltip
                   contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
                   labelStyle={{ color: 'hsl(var(--foreground))' }}
                 />
-                <RechartsLegend />
-                <Line type="monotone" dataKey="cpu" stroke={chartConfig.cpu.color} activeDot={{ r: 8 }} name="CPU (%)" />
-                <Line type="monotone" dataKey="ram" stroke={chartConfig.ram.color} activeDot={{ r: 8 }} name="RAM (%)" />
+                <RechartsLegend wrapperStyle={{fontSize: "0.75rem"}} />
+                <Line type="monotone" dataKey="cpu" stroke={chartConfig.cpu.color} activeDot={{ r: 6 }} name="CPU (%)" strokeWidth={2} />
+                <Line type="monotone" dataKey="ram" stroke={chartConfig.ram.color} activeDot={{ r: 6 }} name="RAM (%)" strokeWidth={2}/>
               </LineChart>
             </ChartContainer>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><HardDrive className="w-5 h-5" /> Disk & Network Usage</CardTitle>
+            <CardTitle className="flex items-center gap-2"><HardDrive className="w-4 h-4" /> Disk & Network Usage</CardTitle> {/* w-5 h-5 to w-4 h-4 */}
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px] w-full">
+            <ChartContainer config={chartConfig} className="h-[250px] w-full"> {/* h-[300px] to h-[250px] */}
               <RechartsBarChart data={serverMetricsData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
-                <YAxis yAxisId="left" orientation="left" stroke={chartConfig.disk.color} />
-                <YAxis yAxisId="right" orientation="right" stroke={chartConfig.network.color} />
+                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={10}/>
+                <YAxis yAxisId="left" orientation="left" stroke={chartConfig.disk.color} fontSize={10}/>
+                <YAxis yAxisId="right" orientation="right" stroke={chartConfig.network.color} fontSize={10}/>
                 <RechartsTooltip
                   contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
                   labelStyle={{ color: 'hsl(var(--foreground))' }}
                 />
-                <RechartsLegend />
-                <Bar yAxisId="left" dataKey="disk" fill={chartConfig.disk.color} name="Disk (%)" />
-                <Bar yAxisId="right" dataKey="network" fill={chartConfig.network.color} name="Network (Mbps)" />
+                <RechartsLegend wrapperStyle={{fontSize: "0.75rem"}}/>
+                <Bar yAxisId="left" dataKey="disk" fill={chartConfig.disk.color} name="Disk (%)" barSize={15} />
+                <Bar yAxisId="right" dataKey="network" fill={chartConfig.network.color} name="Network (Mbps)" barSize={15}/>
               </RechartsBarChart>
             </ChartContainer>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="mb-8">
+      <Card className="mb-6"> {/* mb-8 to mb-6 */}
         <CardHeader>
           <CardTitle>Quick Actions</CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-wrap gap-4">
-          <Button variant="outline"><ServerIcon className="mr-2 h-4 w-4" /> Deploy Service</Button>
-          <Button variant="outline"><Globe className="mr-2 h-4 w-4" /> Add Domain</Button>
-          <Button variant="outline"><Users className="mr-2 h-4 w-4" /> Add User</Button>
-          <Button variant="destructive"><AlertTriangle className="mr-2 h-4 w-4" /> Restart Server</Button>
+        <CardContent className="flex flex-wrap gap-2"> {/* gap-4 to gap-2 */}
+          <Button variant="outline" size="sm"><ServerIcon className="mr-1.5 h-3.5 w-3.5" /> Deploy Service</Button> {/* Button size sm, icon size adjusted */}
+          <Button variant="outline" size="sm"><Globe className="mr-1.5 h-3.5 w-3.5" /> Add Domain</Button>
+          <Button variant="outline" size="sm"><Users className="mr-1.5 h-3.5 w-3.5" /> Add User</Button>
+          <Button variant="destructive" size="sm"><AlertTriangle className="mr-1.5 h-3.5 w-3.5" /> Restart Server</Button>
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> {/* gap-6 to gap-4 */}
         <Card>
           <CardHeader>
             <CardTitle>Server Warnings / Alerts</CardTitle>
           </CardHeader>
           <CardContent>
-            {/* Real-time alerts might use Toasts; this list is for persistent ones. Alerts list implementation is pending. */}
             <ul className="space-y-2">
-              <li className="p-3 rounded-md bg-destructive/10 text-destructive-foreground border border-destructive">High CPU usage on server-01</li>
-              <li className="p-3 rounded-md bg-muted text-muted-foreground">Disk space running low on backup-volume</li>
+              <li className="p-2 rounded-md bg-destructive/10 text-destructive-foreground border border-destructive text-sm">High CPU usage on server-01</li> {/* p-3 to p-2, added text-sm */}
+              <li className="p-2 rounded-md bg-muted text-muted-foreground text-sm">Disk space running low on backup-volume</li> {/* p-3 to p-2, added text-sm */}
             </ul>
           </CardContent>
         </Card>
@@ -117,8 +115,7 @@ export default function DashboardPage() {
             <CardTitle>Activity Feed / Notifications</CardTitle>
           </CardHeader>
           <CardContent>
-            {/* Activity feed implementation is pending. */}
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-1 text-xs"> {/* space-y-2 to space-y-1, text-sm to text-xs */}
               <li>User 'john.doe' logged in.</li>
               <li>Project 'WebApp' deployed successfully.</li>
               <li>Service 'RedisCache' restarted.</li>

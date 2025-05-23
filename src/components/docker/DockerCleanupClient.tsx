@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useTransition } from "react";
@@ -11,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, CheckCircle, XCircle, HelpCircle, Trash2 } from "lucide-react"; // Added Trash2
+import { Loader2, CheckCircle, XCircle, HelpCircle, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const schema = z.object({
@@ -59,7 +60,6 @@ export function DockerCleanupClient() {
   };
 
   const handleConfirmCleanup = (type: string, item: string) => {
-    // Actual cleanup operation logic (e.g., calling an API to prune/remove items) would be implemented here.
     console.log(`User confirmed cleanup for ${type}: ${item} (Simulated)`);
     toast({
       title: "Cleanup Action (Simulated)",
@@ -68,9 +68,9 @@ export function DockerCleanupClient() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4"> {/* space-y-6 to space-y-4 */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3"> {/* space-y-4 to space-y-3 */}
           <FormField
             control={form.control}
             name="dockerImages"
@@ -78,9 +78,9 @@ export function DockerCleanupClient() {
               <FormItem>
                 <FormLabel>Docker Images</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Enter each image name on a new line..." rows={5} {...field} />
+                  <Textarea placeholder="Enter each image name on a new line..." rows={4} {...field} /> {/* rows 5 to 4 */}
                 </FormControl>
-                <FormDescription>List all Docker images currently on your system.</FormDescription>
+                <FormDescription className="text-xs">List all Docker images currently on your system.</FormDescription> {/* Added text-xs */}
                 <FormMessage />
               </FormItem>
             )}
@@ -92,9 +92,9 @@ export function DockerCleanupClient() {
               <FormItem>
                 <FormLabel>Docker Containers</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Enter each container name on a new line..." rows={5} {...field} />
+                  <Textarea placeholder="Enter each container name on a new line..." rows={4} {...field} /> {/* rows 5 to 4 */}
                 </FormControl>
-                <FormDescription>List all Docker containers (running and stopped).</FormDescription>
+                <FormDescription className="text-xs">List all Docker containers (running and stopped).</FormDescription> {/* Added text-xs */}
                 <FormMessage />
               </FormItem>
             )}
@@ -106,24 +106,24 @@ export function DockerCleanupClient() {
               <FormItem>
                 <FormLabel>Docker Volumes</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Enter each volume name on a new line..." rows={5} {...field} />
+                  <Textarea placeholder="Enter each volume name on a new line..." rows={4} {...field} /> {/* rows 5 to 4 */}
                 </FormControl>
-                <FormDescription>List all Docker volumes.</FormDescription>
+                <FormDescription className="text-xs">List all Docker volumes.</FormDescription> {/* Added text-xs */}
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
-            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button type="submit" disabled={isPending} className="w-full sm:w-auto" size="sm"> {/* Added size="sm" */}
+            {isPending && <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />} {/* Icon size adjusted */}
             Analyze Docker Environment
           </Button>
         </form>
       </Form>
 
       {error && (
-        <Alert variant="destructive">
-          <XCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
+        <Alert variant="destructive" className="text-xs"> {/* Added text-xs */}
+          <XCircle className="h-3.5 w-3.5" /> {/* h-4 w-4 to h-3.5 w-3.5 */}
+          <AlertTitle className="text-sm">Error</AlertTitle> {/* Added text-sm */}
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
@@ -133,22 +133,22 @@ export function DockerCleanupClient() {
           <CardHeader>
             <CardTitle>Cleanup Suggestions</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4"> {/* space-y-6 to space-y-4 */}
             <div>
-              <h3 className="font-semibold text-lg mb-2">Reasoning:</h3>
-              <p className="text-sm text-muted-foreground bg-muted p-3 rounded-md">{suggestions.reasoning}</p>
+              <h3 className="font-semibold text-base mb-1.5">Reasoning:</h3> {/* text-lg mb-2 to text-base mb-1.5 */}
+              <p className="text-xs text-muted-foreground bg-muted p-2 rounded-md">{suggestions.reasoning}</p> {/* text-sm p-3 to text-xs p-2 */}
             </div>
             <Separator />
             
             {suggestions.obsoleteImages.length > 0 && (
               <div>
-                <h3 className="font-semibold text-lg mb-2">Obsolete Images ({suggestions.obsoleteImages.length})</h3>
-                <ul className="space-y-2">
+                <h3 className="font-semibold text-base mb-1.5">Obsolete Images ({suggestions.obsoleteImages.length})</h3> {/* text-lg mb-2 to text-base mb-1.5 */}
+                <ul className="space-y-1.5"> {/* space-y-2 to space-y-1.5 */}
                   {suggestions.obsoleteImages.map((image) => (
-                    <li key={image} className="flex items-center justify-between p-3 border rounded-md">
-                      <span className="flex items-center gap-2"><HelpCircle className="w-4 h-4 text-yellow-500"/> {image}</span>
+                    <li key={image} className="flex items-center justify-between p-2 border rounded-md text-xs"> {/* p-3 to p-2, added text-xs */}
+                      <span className="flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-yellow-500"/> {image}</span> {/* gap-2 w-4 h-4 to gap-1.5 w-3.5 h-3.5 */}
                       <Button size="sm" variant="outline" onClick={() => handleConfirmCleanup('image', image)}>
-                        <Trash2 className="mr-2 h-4 w-4" /> Confirm Prune
+                        <Trash2 className="mr-1.5 h-3.5 w-3.5" /> Confirm Prune {/* Icon size adjusted */}
                       </Button>
                     </li>
                   ))}
@@ -158,13 +158,13 @@ export function DockerCleanupClient() {
 
             {suggestions.obsoleteContainers.length > 0 && (
                <div>
-                <h3 className="font-semibold text-lg mb-2">Obsolete Containers ({suggestions.obsoleteContainers.length})</h3>
-                <ul className="space-y-2">
+                <h3 className="font-semibold text-base mb-1.5">Obsolete Containers ({suggestions.obsoleteContainers.length})</h3> {/* text-lg mb-2 to text-base mb-1.5 */}
+                <ul className="space-y-1.5"> {/* space-y-2 to space-y-1.5 */}
                   {suggestions.obsoleteContainers.map((container) => (
-                    <li key={container} className="flex items-center justify-between p-3 border rounded-md">
-                      <span className="flex items-center gap-2"><HelpCircle className="w-4 h-4 text-yellow-500"/> {container}</span>
+                    <li key={container} className="flex items-center justify-between p-2 border rounded-md text-xs"> {/* p-3 to p-2, added text-xs */}
+                      <span className="flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-yellow-500"/> {container}</span> {/* gap-2 w-4 h-4 to gap-1.5 w-3.5 h-3.5 */}
                       <Button size="sm" variant="outline" onClick={() => handleConfirmCleanup('container', container)}>
-                        <Trash2 className="mr-2 h-4 w-4" /> Confirm Remove
+                        <Trash2 className="mr-1.5 h-3.5 w-3.5" /> Confirm Remove {/* Icon size adjusted */}
                       </Button>
                     </li>
                   ))}
@@ -174,13 +174,13 @@ export function DockerCleanupClient() {
 
             {suggestions.obsoleteVolumes.length > 0 && (
               <div>
-                <h3 className="font-semibold text-lg mb-2">Obsolete Volumes ({suggestions.obsoleteVolumes.length})</h3>
-                <ul className="space-y-2">
+                <h3 className="font-semibold text-base mb-1.5">Obsolete Volumes ({suggestions.obsoleteVolumes.length})</h3> {/* text-lg mb-2 to text-base mb-1.5 */}
+                <ul className="space-y-1.5"> {/* space-y-2 to space-y-1.5 */}
                   {suggestions.obsoleteVolumes.map((volume) => (
-                    <li key={volume} className="flex items-center justify-between p-3 border rounded-md">
-                      <span className="flex items-center gap-2"><HelpCircle className="w-4 h-4 text-yellow-500"/> {volume}</span>
+                    <li key={volume} className="flex items-center justify-between p-2 border rounded-md text-xs"> {/* p-3 to p-2, added text-xs */}
+                      <span className="flex items-center gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-yellow-500"/> {volume}</span> {/* gap-2 w-4 h-4 to gap-1.5 w-3.5 h-3.5 */}
                       <Button size="sm" variant="outline" onClick={() => handleConfirmCleanup('volume', volume)}>
-                        <Trash2 className="mr-2 h-4 w-4" /> Confirm Prune
+                        <Trash2 className="mr-1.5 h-3.5 w-3.5" /> Confirm Prune {/* Icon size adjusted */}
                       </Button>
                     </li>
                   ))}
@@ -188,9 +188,9 @@ export function DockerCleanupClient() {
               </div>
             )}
              {(suggestions.obsoleteImages.length === 0 && suggestions.obsoleteContainers.length === 0 && suggestions.obsoleteVolumes.length === 0) && (
-                <Alert>
-                    <CheckCircle className="h-4 w-4" />
-                    <AlertTitle>All Clear!</AlertTitle>
+                <Alert className="text-xs"> {/* Added text-xs */}
+                    <CheckCircle className="h-3.5 w-3.5" /> {/* h-4 w-4 to h-3.5 w-3.5 */}
+                    <AlertTitle className="text-sm">All Clear!</AlertTitle> {/* Added text-sm */}
                     <AlertDescription>No obsolete items found based on the provided lists and current analysis.</AlertDescription>
                 </Alert>
              )}

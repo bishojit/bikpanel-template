@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +23,7 @@ const resetPasswordFormSchema = z.object({
   newPassword: z.string().min(8, { message: "Password must be at least 8 characters." }),
   confirmPassword: z.string(),
   otp: z.string().min(6, { message: "OTP must be 6 digits." }).max(6, { message: "OTP must be 6 digits."}),
-  token: z.string().optional(), // Token might be part of the form if not handled globally
+  token: z.string().optional(), 
 }).refine((data) => data.newPassword === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -57,10 +58,8 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 
   async function onSubmit(values: ResetPasswordFormValues) {
     setIsLoading(true);
-    // Actual reset password logic, including token validation and OTP, would be implemented here.
     console.log("Reset password form submitted (simulated):", values);
-    // The 'token' is available in `values.token` or directly via the `token` prop.
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000)); 
 
     toast({
       title: "Password Reset Successful",
@@ -72,10 +71,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {/* Hidden field for the token if you prefer to submit it with the form */}
-        {/* <FormField control={form.control} name="token" render={({ field }) => <Input type="hidden" {...field} />} /> */}
-        
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4"> {/* space-y-6 to space-y-4 */}
         <FormField
           control={form.control}
           name="newPassword"
@@ -116,7 +112,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
           )}
         />
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />} {/* Icon size and margin adjusted */}
           Reset Password
         </Button>
       </form>

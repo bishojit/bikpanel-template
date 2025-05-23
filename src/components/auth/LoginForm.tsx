@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
@@ -40,33 +41,23 @@ export function LoginForm() {
 
   async function onSubmit(values: LoginFormValues) {
     setIsLoading(true);
-    // Actual login logic (e.g., API call to verify credentials) would be implemented here.
     console.log("Login form submitted (simulated):", values);
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // For prototype: simulate successful login
     if (typeof window !== 'undefined') {
-      localStorage.setItem('mockAuthToken', 'loggedIn'); // Simulate setting an auth token
+      localStorage.setItem('mockAuthToken', 'loggedIn');
     }
 
     toast({
       title: "Login Successful",
       description: "Welcome back!",
     });
-    router.push("/dashboard"); 
-
-    // Example: on failed login (in a real app)
-    // toast({
-    //   variant: "destructive",
-    //   title: "Login Failed",
-    //   description: "Invalid email or password.",
-    // });
-    // setIsLoading(false); // Would be set to false after actual API call
+    router.push("/dashboard");
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4"> {/* space-y-6 to space-y-4 */}
         <FormField
           control={form.control}
           name="email"
@@ -94,7 +85,7 @@ export function LoginForm() {
           )}
         />
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />} {/* Icon size and margin adjusted */}
           Login
         </Button>
       </form>

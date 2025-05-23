@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -129,12 +130,12 @@ export function AppLayout({ children }: AppLayoutProps) {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="sticky top-0 z-30 flex items-center justify-between h-16 px-4 border-b shrink-0 bg-background sm:px-6">
+        <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 border-b shrink-0 bg-background sm:px-6"> {/* h-16 to h-14 */}
             <SidebarTrigger className="md:hidden"/>
             <div className="flex-1"> {/* Placeholder for breadcrumbs or global search */} </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative w-8 h-8 rounded-full">
+                <Button variant="ghost" className="relative w-8 h-8 rounded-full"> {/* Size will be h-8 w-8 from global Button change */}
                   <Avatar className="w-8 h-8">
                     <AvatarImage src={mockUser?.avatar} alt={mockUser?.name || "User"} data-ai-hint="person avatar" />
                     <AvatarFallback>{mockUser?.name?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
@@ -152,22 +153,22 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => router.push('/settings/general')}>
-                  <UserCircle className="w-4 h-4 mr-2" />
+                  <UserCircle className="w-3.5 h-3.5 mr-2" /> {/* Icon size adjusted due to button change */}
                   Profile (Settings)
                 </DropdownMenuItem>
                  <DropdownMenuItem onClick={() => router.push('/settings')}>
-                  <Settings className="w-4 h-4 mr-2" />
+                  <Settings className="w-3.5 h-3.5 mr-2" /> {/* Icon size adjusted */}
                   Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
-                  <LogOut className="w-4 h-4 mr-2" />
+                  <LogOut className="w-3.5 h-3.5 mr-2" /> {/* Icon size adjusted */}
                   Log out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
         </header>
-        <main className="flex-1 p-4 overflow-auto sm:p-6">
+        <main className="flex-1 p-3 overflow-auto sm:p-4"> {/* p-4 sm:p-6 to p-3 sm:p-4 */}
           {children}
         </main>
       </SidebarInset>
