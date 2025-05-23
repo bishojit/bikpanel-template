@@ -32,7 +32,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Logo } from "@/components/shared/Logo";
 import { siteConfig } from "@/config/site";
 import type { NavItem } from "@/types";
-import { ChevronDown, LogOut, UserCircle, Settings } from "lucide-react"; // Added Settings icon
+import { ChevronDown, LogOut, UserCircle, Settings as SettingsIconLucide } from "lucide-react"; // Renamed Settings to avoid conflict
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 
 interface AppLayoutProps {
@@ -59,13 +60,11 @@ export function AppLayout({ children }: AppLayoutProps) {
     router.push("/login");
   };
 
-  // RBAC filtering for nav items would be implemented in a real application
-  // based on user roles. For this prototype, all nav items are shown.
   const accessibleNavItems = siteConfig.sidebarNav;
 
   const renderNavItem = (item: NavItem, index: number, isSubItem = false) => {
     const Icon = item.icon;
-    const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href || '---')); // ensure item.href is defined
+    const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href || '---')); 
 
     if (item.children && item.children.length > 0) {
       return (
@@ -130,45 +129,48 @@ export function AppLayout({ children }: AppLayoutProps) {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 border-b shrink-0 bg-background sm:px-6"> {/* h-16 to h-14 */}
+        <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 border-b shrink-0 bg-background sm:px-6">
             <SidebarTrigger className="md:hidden"/>
             <div className="flex-1"> {/* Placeholder for breadcrumbs or global search */} </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative w-8 h-8 rounded-full"> {/* Size will be h-8 w-8 from global Button change */}
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage src={mockUser?.avatar} alt={mockUser?.name || "User"} data-ai-hint="person avatar" />
-                    <AvatarFallback>{mockUser?.name?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{mockUser?.name}</p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {mockUser?.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => router.push('/settings/general')}>
-                  <UserCircle className="w-3.5 h-3.5 mr-2" /> {/* Icon size adjusted due to button change */}
-                  Profile (Settings)
-                </DropdownMenuItem>
-                 <DropdownMenuItem onClick={() => router.push('/settings')}>
-                  <Settings className="w-3.5 h-3.5 mr-2" /> {/* Icon size adjusted */}
-                  Settings
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>
-                  <LogOut className="w-3.5 h-3.5 mr-2" /> {/* Icon size adjusted */}
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div className="flex items-center gap-2">
+              <ThemeSwitcher />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative w-8 h-8 rounded-full">
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage src={mockUser?.avatar} alt={mockUser?.name || "User"} data-ai-hint="person avatar" />
+                      <AvatarFallback>{mockUser?.name?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{mockUser?.name}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {mockUser?.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => router.push('/settings/general')}>
+                    <UserCircle className="w-3.5 h-3.5 mr-2" />
+                    Profile (Settings)
+                  </DropdownMenuItem>
+                   <DropdownMenuItem onClick={() => router.push('/settings')}>
+                    <SettingsIconLucide className="w-3.5 h-3.5 mr-2" /> 
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="w-3.5 h-3.5 mr-2" /> 
+                    Log out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
         </header>
-        <main className="flex-1 p-3 overflow-auto sm:p-4"> {/* p-4 sm:p-6 to p-3 sm:p-4 */}
+        <main className="flex-1 p-3 overflow-auto sm:p-4"> 
           {children}
         </main>
       </SidebarInset>
