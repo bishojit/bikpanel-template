@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 body {
-  font-family: var(--font-poppins), Arial, Helvetica, sans-serif; /* Changed from --font-geist-sans */
+  font-family: var(--font-poppins), Arial, Helvetica, sans-serif; /* Ensured Poppins is primary */
 }
 
 @layer base {

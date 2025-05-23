@@ -5,10 +5,11 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from '@/components/layout/ThemeProviderClient';
 
-const poppins = Poppins({ // Changed from geistSans and geistMono
+const poppins = Poppins({ 
   variable: '--font-poppins',
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'], // Added common weights
+  display: 'swap', // Added display: 'swap'
 });
 
 export const metadata: Metadata = {
