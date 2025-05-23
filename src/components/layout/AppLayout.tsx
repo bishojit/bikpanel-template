@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation"; // Added useRouter
 import type { ReactNode } from "react";
+import * as Collapsible from "@radix-ui/react-collapsible"; // Import Collapsible
 import {
   SidebarProvider,
   Sidebar,
@@ -62,51 +63,57 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   const accessibleNavItems = siteConfig.sidebarNav;
 
-  const renderNavItem = (item: NavItem, index: number, isSubItem = false) => {
+  const renderNavItem = (item: NavItem, index: number) => {
     const Icon = item.icon;
-    const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href || '---')); 
+    const isActiveParent = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href || '---'));
+    const isChildActive = item.children?.some(child => pathname === child.href || pathname.startsWith(child.href || '---'));
 
     if (item.children && item.children.length > 0) {
       return (
-        <SidebarMenuItem key={`${item.href}-${index}`}>
-          <SidebarMenuButton
-            isActive={isActive}
-            className="justify-between"
-          >
-            <span className="flex items-center gap-2">
-              {Icon && <Icon />}
-              <span>{item.title}</span>
-            </span>
-            <ChevronDown className="h-4 w-4" />
-          </SidebarMenuButton>
-          <SidebarMenuSub>
-            {item.children.map((child, childIndex) => (
-               <SidebarMenuSubItem key={`${child.href}-${childIndex}`}>
-                <Link href={child.href} passHref legacyBehavior>
-                  <SidebarMenuSubButton isActive={pathname === child.href}>
-                    {child.icon && <child.icon />}
-                    <span>{child.title}</span>
-                  </SidebarMenuSubButton>
-                </Link>
-              </SidebarMenuSubItem>
-            ))}
-          </SidebarMenuSub>
-        </SidebarMenuItem>
+        <Collapsible.Root asChild key={`${item.href}-${index}`} defaultOpen={isActiveParent || isChildActive}>
+          <SidebarMenuItem className="group"> {/* Added group for chevron rotation */}
+            <Collapsible.Trigger asChild>
+              <SidebarMenuButton
+                isActive={isActiveParent && !isChildActive} // Parent active only if no child is specifically active
+                className="justify-between"
+              >
+                <span className="flex items-center gap-2">
+                  {Icon && <Icon />}
+                  <span>{item.title}</span>
+                </span>
+                {/* Chevron will rotate based on the Collapsible's data-state on SidebarMenuItem */}
+                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+              </SidebarMenuButton>
+            </Collapsible.Trigger>
+            <Collapsible.Content asChild>
+              <SidebarMenuSub>
+                {item.children.map((child, childIndex) => (
+                   <SidebarMenuSubItem key={`${child.href}-${childIndex}`}>
+                    <Link href={child.href} passHref legacyBehavior>
+                      <SidebarMenuSubButton isActive={pathname === child.href || pathname.startsWith(child.href || '---')}>
+                        {child.icon && <child.icon />}
+                        <span>{child.title}</span>
+                      </SidebarMenuSubButton>
+                    </Link>
+                  </SidebarMenuSubItem>
+                ))}
+              </SidebarMenuSub>
+            </Collapsible.Content>
+          </SidebarMenuItem>
+        </Collapsible.Root>
       );
     }
     
-    const MenuButtonComponent = isSubItem ? SidebarMenuSubButton : SidebarMenuButton;
-    const ItemComponent = isSubItem ? SidebarMenuSubItem : SidebarMenuItem;
-
+    // For items without children
     return (
-      <ItemComponent key={`${item.href}-${index}`}>
+      <SidebarMenuItem key={`${item.href}-${index}`}>
         <Link href={item.href} passHref legacyBehavior>
-          <MenuButtonComponent isActive={isActive} tooltip={item.title}>
+          <SidebarMenuButton isActive={isActiveParent} tooltip={item.title}>
             {Icon && <Icon />}
             <span>{item.title}</span>
-          </MenuButtonComponent>
+          </SidebarMenuButton>
         </Link>
-      </ItemComponent>
+      </SidebarMenuItem>
     );
   };
 
@@ -116,8 +123,8 @@ export function AppLayout({ children }: AppLayoutProps) {
       <Sidebar collapsible="icon">
         <SidebarHeader>
           <Link href="/dashboard" className="flex items-center gap-2 p-2">
-            <Logo className="w-8 h-8" />
-            <span className="font-semibold text-lg group-data-[collapsible=icon]:hidden">{siteConfig.name}</span>
+            <Logo className="w-6 h-6" /> {/* Adjusted logo size for compactness */}
+            <span className="font-semibold text-base group-data-[collapsible=icon]:hidden">{siteConfig.name}</span> {/* Adjusted font size */}
           </Link>
         </SidebarHeader>
         <SidebarContent>
@@ -129,15 +136,15 @@ export function AppLayout({ children }: AppLayoutProps) {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 border-b shrink-0 bg-background sm:px-6">
+        <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-3 border-b shrink-0 bg-background sm:px-4"> {/* h-16 to h-14, px-4 to px-3, sm:px-6 to sm:px-4 */}
             <SidebarTrigger className="md:hidden"/>
             <div className="flex-1"> {/* Placeholder for breadcrumbs or global search */} </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5"> {/* gap-2 to gap-1.5 */}
               <ThemeSwitcher />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative w-8 h-8 rounded-full">
-                    <Avatar className="w-8 h-8">
+                  <Button variant="ghost" className="relative w-7 h-7 rounded-full"> {/* w-8 h-8 to w-7 h-7 */}
+                    <Avatar className="w-7 h-7"> {/* w-8 h-8 to w-7 h-7 */}
                       <AvatarImage src={mockUser?.avatar} alt={mockUser?.name || "User"} data-ai-hint="person avatar" />
                       <AvatarFallback>{mockUser?.name?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
                     </Avatar>
@@ -170,10 +177,11 @@ export function AppLayout({ children }: AppLayoutProps) {
               </DropdownMenu>
             </div>
         </header>
-        <main className="flex-1 p-3 overflow-auto sm:p-4"> 
+        <main className="flex-1 p-2 overflow-auto sm:p-3">  {/* p-3 sm:p-4 to p-2 sm:p-3 */}
           {children}
         </main>
       </SidebarInset>
     </SidebarProvider>
   );
 }
+
