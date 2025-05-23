@@ -34,7 +34,7 @@ const serviceSchema = z.object({
   name: z.string().min(1, 'Service name is required').max(50, 'Service name too long'),
   template: z.enum(serviceTemplates),
   linkedProject: z.string().optional(),
-  notes: z.string().optional().max(200, 'Notes too long'),
+  notes: z.string().max(200, 'Notes too long').optional(),
 });
 
 export type ServiceFormValues = z.infer<typeof serviceSchema>;
