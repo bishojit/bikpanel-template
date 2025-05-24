@@ -21,7 +21,7 @@ const generateDemoUsers = (count: number): UserType[] => {
   const userTypes: UserType["type"][] = ["Root", "Reseller", "Customer"];
 
   for (let i = 1; i <= count; i++) {
-    const randomUsername = `user${i}_${Math.random().toString(36).substring(2, 7)}`;
+    const randomUsername = `user${i}_${crypto.randomUUID().slice(0,6)}`;
     users.push({
       id: `user-${i}-${crypto.randomUUID().slice(0,6)}`,
       username: randomUsername,
@@ -157,7 +157,6 @@ export default function UsersPage() {
               <TableHeader><TableRow>
                   <TableHead>Username</TableHead>
                   <TableHead>Contact</TableHead>
-                  <TableHead>Role</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Last Login</TableHead>
@@ -171,7 +170,6 @@ export default function UsersPage() {
                       <div className="font-medium">{user.fullName || <span className="text-muted-foreground italic">N/A</span>}</div>
                       <div className="text-xs text-muted-foreground">{user.email}</div>
                     </TableCell>
-                    <TableCell>{user.role.charAt(0).toUpperCase() + user.role.slice(1)}</TableCell>
                     <TableCell>{user.type.charAt(0).toUpperCase() + user.type.slice(1)}</TableCell>
                     <TableCell>
                        <span className={`px-1.5 py-0.5 text-xs rounded-full ${
@@ -194,14 +192,14 @@ export default function UsersPage() {
                 ))}
                  {paginatedUsers.length === 0 && allDemoUsers.length > 0 && searchTerm && (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground">
+                    <TableCell colSpan={6} className="text-center text-muted-foreground">
                       No users match your search criteria.
                     </TableCell>
                   </TableRow>
                 )}
                  {allDemoUsers.length === 0 && !searchTerm && (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground">
+                    <TableCell colSpan={6} className="text-center text-muted-foreground">
                      Loading demo users...
                     </TableCell>
                   </TableRow>
@@ -255,3 +253,5 @@ export default function UsersPage() {
     </div>
   );
 }
+
+    
