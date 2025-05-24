@@ -32,8 +32,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState(''); // Added fullName state
-  const [userType, setUserType] = useState<UserType | ''>('');
+  const [fullName, setFullName] = useState('');
+  const [userType, setUserType] = useState<UserType | ''>('Customer'); // Pre-select 'Customer'
 
   const handleCreateUser = () => {
     // Basic validation (can be enhanced with react-hook-form/zod if needed)
@@ -42,15 +42,15 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
       return;
     }
     // Handle user creation logic here (e.g., API call)
-    console.log('Creating user (simulated):', { username, email, password, fullName, type: userType }); // Added fullName to log
+    console.log('Creating user (simulated):', { username, email, password, fullName, type: userType });
     // onUserCreate({ username, email, password, type: userType }); // Example callback
     onClose(); // Close modal after creation
     // Reset fields
     setUsername('');
     setEmail('');
     setPassword('');
-    setFullName(''); // Reset fullName
-    setUserType('');
+    setFullName('');
+    setUserType('Customer'); // Reset to Customer on close/create
   };
 
   const resetFieldsAndClose = () => {
@@ -58,8 +58,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
     setUsername('');
     setEmail('');
     setPassword('');
-    setFullName(''); // Reset fullName on cancel
-    setUserType('');
+    setFullName('');
+    setUserType('Customer'); // Reset to Customer on cancel
   };
 
   return (
@@ -110,7 +110,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
               placeholder="••••••••"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-3"> {/* Added Full Name field */}
+          <div className="grid grid-cols-4 items-center gap-3">
             <Label htmlFor="fullName" className="text-right text-xs">
               Full Name
             </Label>
