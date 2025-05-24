@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   AlertDialog,
@@ -8,7 +9,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,22 +20,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { UserType } from '@/types'; // Assuming UserType is 'Root' | 'Reseller' | 'Customer'
 
 interface CreateUserModalProps {
   isOpen: boolean;
   onClose: () => void;
+  // onUserCreate: (userData: any) => void; // Callback for actual creation
 }
 
 const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) => {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
+  const [userType, setUserType] = useState<UserType | ''>(''); // Use UserType from types
 
   const handleCreateUser = () => {
-    // Handle user creation logic here
-    console.log('Creating user:', { name, email, password, role });
+    // Basic validation (can be enhanced with react-hook-form/zod if needed)
+    if (!username || !email || !password || !userType) {
+      alert("Please fill all required fields."); // Simple alert, can use toast
+      return;
+    }
+    // Handle user creation logic here (e.g., API call)
+    console.log('Creating user (simulated):', { username, email, password, type: userType });
+    // onUserCreate({ username, email, password, type: userType }); // Example callback
     onClose(); // Close modal after creation
+    // Reset fields
+    setUsername('');
+    setEmail('');
+    setPassword('');
+    setUserType('');
   };
 
   return (
@@ -44,47 +57,72 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
         <AlertDialogHeader>
           <AlertDialogTitle>Create New User</AlertDialogTitle>
           <AlertDialogDescription>
-            Enter the details for the new user.
+            Enter the details for the new user. Username and Email must be unique.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+        <div className="grid gap-3 py-4"> {/* Reduced gap */}
+          <div className="grid grid-cols-4 items-center gap-3"> {/* Reduced gap */}
+            <Label htmlFor="username" className="text-right text-xs"> {/* Smaller label */}
+              Username
             </Label>
-            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="col-span-3" />
+            <Input 
+              id="username" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} 
+              className="col-span-3" 
+              placeholder="e.g., newuser123" 
+            />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right">
+          <div className="grid grid-cols-4 items-center gap-3"> {/* Reduced gap */}
+            <Label htmlFor="email" className="text-right text-xs"> {/* Smaller label */}
               Email
             </Label>
-            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="col-span-3" />
+            <Input 
+              id="email" 
+              type="email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              className="col-span-3" 
+              placeholder="e.g., user@example.com"
+            />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="password" className="text-right">
+          <div className="grid grid-cols-4 items-center gap-3"> {/* Reduced gap */}
+            <Label htmlFor="password" className="text-right text-xs"> {/* Smaller label */}
               Password
             </Label>
-            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="col-span-3" />
+            <Input 
+              id="password" 
+              type="password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              className="col-span-3" 
+              placeholder="••••••••"
+            />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="role" className="text-right">
-              Role
+          <div className="grid grid-cols-4 items-center gap-3"> {/* Reduced gap */}
+            <Label htmlFor="type" className="text-right text-xs"> {/* Smaller label */}
+              Type
             </Label>
-            <Select onValueChange={setRole} value={role}>
+            <Select onValueChange={(value) => setUserType(value as UserType)} value={userType}>
               <SelectTrigger className="col-span-3">
-                <SelectValue placeholder="Select a role" />
+                <SelectValue placeholder="Select a type" />
               </SelectTrigger>
               <SelectContent>
-                {/* Replace with your actual roles */}
-                <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="editor">Editor</SelectItem>
-                <SelectItem value="viewer">Viewer</SelectItem>
+                <SelectItem value="Reseller">Reseller</SelectItem>
+                <SelectItem value="Customer">Customer</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel onClick={() => {
+            onClose();
+            // Optionally reset fields on cancel too
+            setUsername('');
+            setEmail('');
+            setPassword('');
+            setUserType('');
+          }}>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={handleCreateUser}>Create User</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
