@@ -10,8 +10,8 @@ import UserActions from "@/components/users/UserActions";
 import type { User as UserType } from "@/types"; 
 import React, { useState, useEffect, useMemo } from "react"; 
 import CreateUserModal from '@/components/auth/CreateUserModal'; 
-import EditUserModal from '@/components/users/EditUserModal'; // Import EditUserModal
-import { useToast } from "@/hooks/use-toast"; // Import useToast for user creation simulation
+import EditUserModal from '@/components/users/EditUserModal';
+import { useToast } from "@/hooks/use-toast";
 
 
 const generateDemoUsers = (count: number): UserType[] => {
@@ -40,15 +40,16 @@ const generateDemoUsers = (count: number): UserType[] => {
 const ITEMS_PER_PAGE = 50;
 
 export default function UsersPage() {
-  const { toast } = useToast(); // For create user simulation
+  const { toast } = useToast();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // State for edit modal
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [allDemoUsers, setAllDemoUsers] = useState<UserType[]>([]);
-  const [currentUserToEdit, setCurrentUserToEdit] = useState<UserType | null>(null); // State for user being edited
+  const [currentUserToEdit, setCurrentUserToEdit] = useState<UserType | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
+    // Generate users only on the client side
     setAllDemoUsers(generateDemoUsers(205));
   }, []);
 
@@ -81,8 +82,8 @@ export default function UsersPage() {
     const newUser: UserType = {
       id: `user-new-${crypto.randomUUID().slice(0,6)}`,
       ...userData,
-      status: 'active', // Default status for new user
-      role: 'user', // Default role for new user
+      status: 'active', 
+      role: 'user', 
       lastLogin: new Date(),
       timeCreated: new Date(),
     };
@@ -113,7 +114,7 @@ export default function UsersPage() {
 
   const getShowingText = () => {
     if (filteredUsers.length === 0 && allDemoUsers.length > 0 && searchTerm) return "No users match your search criteria.";
-    if (allDemoUsers.length === 0 && !searchTerm ) return "Loading users..."; // Changed to show loading if no search term and no users
+    if (allDemoUsers.length === 0 && !searchTerm ) return "Loading users..."; 
     if (filteredUsers.length === 0) return "No users yet.";
     const startItem = (currentPage - 1) * ITEMS_PER_PAGE + 1;
     const endItem = Math.min(currentPage * ITEMS_PER_PAGE, filteredUsers.length);
@@ -155,8 +156,7 @@ export default function UsersPage() {
             <Table>
               <TableHeader><TableRow>
                   <TableHead>Username</TableHead>
-                  <TableHead>Full Name</TableHead>
-                  <TableHead>Email</TableHead>
+                  <TableHead>Contact</TableHead>
                   <TableHead>Role</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Status</TableHead>
@@ -167,8 +167,10 @@ export default function UsersPage() {
                 {paginatedUsers.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell className="font-medium">{user.username}</TableCell>
-                    <TableCell>{user.fullName}</TableCell>
-                    <TableCell>{user.email}</TableCell>
+                    <TableCell>
+                      <div className="font-medium">{user.fullName || <span className="text-muted-foreground italic">N/A</span>}</div>
+                      <div className="text-xs text-muted-foreground">{user.email}</div>
+                    </TableCell>
                     <TableCell>{user.role.charAt(0).toUpperCase() + user.role.slice(1)}</TableCell>
                     <TableCell>{user.type.charAt(0).toUpperCase() + user.type.slice(1)}</TableCell>
                     <TableCell>
@@ -192,14 +194,14 @@ export default function UsersPage() {
                 ))}
                  {paginatedUsers.length === 0 && allDemoUsers.length > 0 && searchTerm && (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center text-muted-foreground">
+                    <TableCell colSpan={7} className="text-center text-muted-foreground">
                       No users match your search criteria.
                     </TableCell>
                   </TableRow>
                 )}
                  {allDemoUsers.length === 0 && !searchTerm && (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center text-muted-foreground">
+                    <TableCell colSpan={7} className="text-center text-muted-foreground">
                      Loading demo users...
                     </TableCell>
                   </TableRow>
