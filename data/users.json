@@ -1,0 +1,27 @@
+
+[
+  {
+    "id": 1001,
+    "username": "bishojit",
+    "fullName": "Kumar Bishojit Paul",
+    "email": "bishojit@gmail.com",
+    "timeCreated": "2023-10-27T10:30:00Z",
+    "status": "ACTIVE"
+  },
+  {
+    "id": 1002,
+    "username": "janedoe",
+    "fullName": "Jane Doe",
+    "email": "jane.doe@example.com",
+    "timeCreated": "2023-11-15T14:45:10Z",
+    "status": "ACTIVE"
+  },
+  {
+    "id": 1003,
+    "username": "mikesh",
+    "fullName": "Mike Sharma",
+    "email": "mike.sharma@example.com",
+    "timeCreated": "2024-01-20T09:12:00Z",
+    "status": "INACTIVE"
+  }
+]
