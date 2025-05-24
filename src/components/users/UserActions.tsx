@@ -1,4 +1,6 @@
 
+"use client";
+
 import React from 'react';
 import type { User as UserType } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -19,32 +21,23 @@ import { useToast } from "@/hooks/use-toast";
 
 interface UserActionsProps {
   user: UserType;
+  onEdit: () => void; // Callback to handle edit action in parent
+  onDelete: () => void; // Callback for delete
 }
 
-const UserActions: React.FC<UserActionsProps> = ({ user }) => {
+const UserActions: React.FC<UserActionsProps> = ({ user, onEdit, onDelete }) => {
   const { toast } = useToast();
 
-  const handleEdit = () => {
-    // Actual edit functionality (e.g., opening a modal with user data) would be implemented here.
-    console.log(`Edit user (simulated): ${user.username}`);
-    toast({ title: "Edit User (Simulated)", description: `Editing user ${user.username}.` });
-  };
-
-  const handleDelete = () => {
-    // Actual delete functionality (e.g., API call to delete user) would be implemented here.
-    console.log(`Delete user (simulated): ${user.username}`);
-    toast({ variant: "destructive", title: "Delete User (Simulated)", description: `User ${user.username} would be deleted.` });
-  };
+  // Removed handleDelete from here, as it's now passed from parent
 
   const handleViewLogs = () => {
-    // Actual view logs functionality (e.g., opening a drawer/modal with user logs) would be implemented here.
     console.log(`View logs for user (simulated): ${user.username}`);
     toast({ title: "View Logs (Simulated)", description: `Viewing logs for ${user.username}.` });
   };
 
   return (
     <div className="flex space-x-1">
-      <Button variant="ghost" size="icon" onClick={handleEdit} aria-label={`Edit user ${user.username}`}>
+      <Button variant="ghost" size="icon" onClick={onEdit} aria-label={`Edit user ${user.username}`}>
         <Pencil className="h-4 w-4" />
       </Button>
       <AlertDialog>
@@ -63,7 +56,7 @@ const UserActions: React.FC<UserActionsProps> = ({ user }) => {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={handleDelete}
+              onClick={onDelete} // Use the onDelete prop from parent
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Delete User

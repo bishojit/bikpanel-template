@@ -10,21 +10,28 @@ import UserActions from "@/components/users/UserActions";
 import type { User as UserType } from "@/types"; 
 import React, { useState, useEffect, useMemo } from "react"; 
 import CreateUserModal from '@/components/auth/CreateUserModal'; 
+import EditUserModal from '@/components/users/EditUserModal'; // Import EditUserModal
+import { useToast } from "@/hooks/use-toast"; // Import useToast for user creation simulation
 
 
 const generateDemoUsers = (count: number): UserType[] => {
   const users: UserType[] = [];
   const roles: UserType["role"][] = ["admin", "user", "operator"];
   const statuses: UserType["status"][] = ["active", "inactive", "suspended"];
+  const userTypes: UserType["type"][] = ["Root", "Reseller", "Customer"];
 
   for (let i = 1; i <= count; i++) {
+    const randomUsername = `user${i}_${Math.random().toString(36).substring(2, 7)}`;
     users.push({
-      id: `user-${i}`,
-      username: `user${i}_${Math.random().toString(36).substring(7)}`,
-      email: `user${i}@example.com`,
+      id: `user-${i}-${crypto.randomUUID().slice(0,6)}`,
+      username: randomUsername,
+      fullName: `Demo User ${i}`,
+      email: `${randomUsername}@example.com`,
       role: roles[i % roles.length],
+      type: userTypes[i % userTypes.length],
       status: statuses[i % statuses.length],
-      lastLogin: new Date(Date.now() - Math.floor(Math.random() * 1000000000)).toLocaleString(),
+      lastLogin: new Date(Date.now() - Math.floor(Math.random() * 10000000000)),
+      timeCreated: new Date(Date.now() - Math.floor(Math.random() * 20000000000)),
     });
   }
   return users;
@@ -33,13 +40,15 @@ const generateDemoUsers = (count: number): UserType[] => {
 const ITEMS_PER_PAGE = 50;
 
 export default function UsersPage() {
+  const { toast } = useToast(); // For create user simulation
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // State for edit modal
   const [allDemoUsers, setAllDemoUsers] = useState<UserType[]>([]);
+  const [currentUserToEdit, setCurrentUserToEdit] = useState<UserType | null>(null); // State for user being edited
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    // Generate users only on client-side to avoid hydration issues with Math.random()
     setAllDemoUsers(generateDemoUsers(205));
   }, []);
 
@@ -47,7 +56,8 @@ export default function UsersPage() {
     if (!allDemoUsers) return [];
     return allDemoUsers.filter(user => 
       user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.fullName && user.fullName.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   }, [allDemoUsers, searchTerm]);
 
@@ -67,9 +77,43 @@ export default function UsersPage() {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   };
 
+  const handleCreateUser = (userData: Omit<UserType, 'id' | 'lastLogin' | 'timeCreated' | 'status' | 'role'>) => {
+    const newUser: UserType = {
+      id: `user-new-${crypto.randomUUID().slice(0,6)}`,
+      ...userData,
+      status: 'active', // Default status for new user
+      role: 'user', // Default role for new user
+      lastLogin: new Date(),
+      timeCreated: new Date(),
+    };
+    setAllDemoUsers(prev => [newUser, ...prev]);
+    toast({ title: "User Created (Simulated)", description: `User "${newUser.username}" has been created.` });
+    setIsCreateModalOpen(false);
+  };
+
+  const handleEditUser = (user: UserType) => {
+    setCurrentUserToEdit(user);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateUser = (updatedUser: UserType) => {
+    setAllDemoUsers(prevUsers => 
+      prevUsers.map(user => user.id === updatedUser.id ? updatedUser : user)
+    );
+    setIsEditModalOpen(false);
+    setCurrentUserToEdit(null);
+  };
+
+  const handleDeleteUser = (userId: string) => {
+    setAllDemoUsers(prev => prev.filter(u => u.id !== userId));
+    const deletedUser = allDemoUsers.find(u => u.id === userId);
+    toast({ variant: "destructive", title: "User Deleted (Simulated)", description: `User ${deletedUser?.username} would be deleted.` });
+  };
+
+
   const getShowingText = () => {
     if (filteredUsers.length === 0 && allDemoUsers.length > 0 && searchTerm) return "No users match your search criteria.";
-    if (allDemoUsers.length === 0) return "Loading users...";
+    if (allDemoUsers.length === 0 && !searchTerm ) return "Loading users..."; // Changed to show loading if no search term and no users
     if (filteredUsers.length === 0) return "No users yet.";
     const startItem = (currentPage - 1) * ITEMS_PER_PAGE + 1;
     const endItem = Math.min(currentPage * ITEMS_PER_PAGE, filteredUsers.length);
@@ -97,22 +141,24 @@ export default function UsersPage() {
         <CardContent className="space-y-3">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <Input 
-              placeholder="Search users by username or email..." 
+              placeholder="Search by username, email, or name..." 
               className="w-full sm:max-w-xs"
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
-                setCurrentPage(1); // Reset to first page on search
+                setCurrentPage(1); 
               }}
             />
           </div>
 
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader className="sticky top-14 bg-card z-10"><TableRow>
+              <TableHeader><TableRow>
                   <TableHead>Username</TableHead>
+                  <TableHead>Full Name</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Role</TableHead>
+                  <TableHead>Type</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Last Login</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -121,8 +167,10 @@ export default function UsersPage() {
                 {paginatedUsers.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell className="font-medium">{user.username}</TableCell>
+                    <TableCell>{user.fullName}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.role.charAt(0).toUpperCase() + user.role.slice(1)}</TableCell>
+                    <TableCell>{user.type.charAt(0).toUpperCase() + user.type.slice(1)}</TableCell>
                     <TableCell>
                        <span className={`px-1.5 py-0.5 text-xs rounded-full ${
                         user.status === 'active' ? 'bg-green-500/20 text-green-700 dark:text-green-400' :
@@ -134,21 +182,25 @@ export default function UsersPage() {
                     </TableCell>
                     <TableCell>{user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'N/A'}</TableCell>
                     <TableCell className="text-right">
-                      <UserActions user={user} />
+                      <UserActions 
+                        user={user} 
+                        onEdit={() => handleEditUser(user)} 
+                        onDelete={() => handleDeleteUser(user.id)}
+                      />
                     </TableCell>
                   </TableRow>
                 ))}
                  {paginatedUsers.length === 0 && allDemoUsers.length > 0 && searchTerm && (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground">
+                    <TableCell colSpan={8} className="text-center text-muted-foreground">
                       No users match your search criteria.
                     </TableCell>
                   </TableRow>
                 )}
                  {allDemoUsers.length === 0 && !searchTerm && (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground">
-                      Loading demo users...
+                    <TableCell colSpan={8} className="text-center text-muted-foreground">
+                     Loading demo users...
                     </TableCell>
                   </TableRow>
                 )}
@@ -184,7 +236,20 @@ export default function UsersPage() {
           )}
         </CardContent>
       </Card>
-      <CreateUserModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />
+      <CreateUserModal 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)} 
+        onUserCreate={handleCreateUser}
+      />
+      <EditUserModal 
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setCurrentUserToEdit(null);
+        }}
+        userToEdit={currentUserToEdit}
+        onUserUpdate={handleUpdateUser}
+      />
     </div>
   );
 }
