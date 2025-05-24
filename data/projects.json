@@ -1,0 +1,43 @@
+
+[
+  {
+    "Id": "prj_001",
+    "Username": "bishojit",
+    "ProjectName": "project-alpha",
+    "ProjectTitle": "Alpha E-commerce Platform",
+    "Description": "Next-generation e-commerce solution with AI-powered recommendations.",
+    "Status": "ACTIVE"
+  },
+  {
+    "Id": "prj_002",
+    "Username": "janedoe",
+    "ProjectName": "project-beta-crm",
+    "ProjectTitle": "Beta Customer Relationship Management",
+    "Description": "A simple and intuitive CRM for small businesses.",
+    "Status": "INACTIVE"
+  },
+  {
+    "Id": "prj_003",
+    "Username": "mikesh",
+    "ProjectName": "gamma-analytics",
+    "ProjectTitle": "Gamma Data Analytics Dashboard",
+    "Description": "Real-time analytics dashboard for tracking key performance indicators.",
+    "Status": "SUSPENDED"
+  },
+  {
+    "Id": "prj_004",
+    "Username": "alicew",
+    "ProjectName": "delta-social-app",
+    "ProjectTitle": "Delta Social Networking App",
+    "Description": "A new social platform focused on community building and local events.",
+    "Status": "ACTIVE"
+  },
+  {
+    "Id": "prj_005",
+    "Username": "bishojit",
+    "ProjectName": "epsilon-docs",
+    "ProjectTitle": "Epsilon Documentation Site",
+    "Description": "Centralized documentation portal for all Epsilon services.",
+    "Status": "ACTIVE"
+  }
+]
