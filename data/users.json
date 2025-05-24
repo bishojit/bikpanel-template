@@ -1,27 +1,58 @@
 
 [
   {
-    "id": 1001,
+    "id": "1001",
     "username": "bishojit",
     "fullName": "Kumar Bishojit Paul",
     "email": "bishojit@gmail.com",
     "timeCreated": "2023-10-27T10:30:00Z",
-    "status": "ACTIVE"
+    "status": "active",
+    "role": "admin",
+    "type": "Root",
+    "lastLogin": "2024-07-15T10:00:00Z"
   },
   {
-    "id": 1002,
+    "id": "1002",
     "username": "janedoe",
     "fullName": "Jane Doe",
     "email": "jane.doe@example.com",
     "timeCreated": "2023-11-15T14:45:10Z",
-    "status": "ACTIVE"
+    "status": "active",
+    "role": "user",
+    "type": "Reseller",
+    "lastLogin": "2024-07-14T12:30:00Z"
   },
   {
-    "id": 1003,
+    "id": "1003",
     "username": "mikesh",
     "fullName": "Mike Sharma",
     "email": "mike.sharma@example.com",
     "timeCreated": "2024-01-20T09:12:00Z",
-    "status": "INACTIVE"
+    "status": "inactive",
+    "role": "operator",
+    "type": "Customer",
+    "lastLogin": "2024-06-20T08:00:00Z"
+  },
+  {
+    "id": "1004",
+    "username": "alicew",
+    "fullName": "Alice Wonderland",
+    "email": "alice.w@example.com",
+    "timeCreated": "2024-02-10T11:00:00Z",
+    "status": "active",
+    "role": "admin",
+    "type": "Root",
+    "lastLogin": "2024-07-15T09:30:00Z"
+  },
+  {
+    "id": "1005",
+    "username": "bobthebuilder",
+    "fullName": "Bob Builder",
+    "email": "bob.b@example.com",
+    "timeCreated": "2024-03-05T16:20:00Z",
+    "status": "suspended",
+    "role": "user",
+    "type": "Customer",
+    "lastLogin": "2024-05-01T10:00:00Z"
   }
 ]

@@ -1,13 +1,17 @@
 
 export type Role = "admin" | "user" | "operator";
+export type UserType = "Root" | "Reseller" | "Customer";
 
 export interface User {
   id: string;
   username: string;
   email: string;
   role: Role;
+  type: UserType; // Added user type
   status: "active" | "inactive" | "suspended";
   lastLogin?: Date | string;
+  fullName?: string; // Added to match users.json
+  timeCreated?: Date | string; // Added to match users.json
 }
 
 export interface EnvironmentVariable {
