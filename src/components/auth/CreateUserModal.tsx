@@ -32,27 +32,38 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState<UserType | ''>(''); // Use UserType from types
+  const [fullName, setFullName] = useState(''); // Added fullName state
+  const [userType, setUserType] = useState<UserType | ''>('');
 
   const handleCreateUser = () => {
     // Basic validation (can be enhanced with react-hook-form/zod if needed)
     if (!username || !email || !password || !userType) {
-      alert("Please fill all required fields."); // Simple alert, can use toast
+      alert("Please fill all required fields (Username, Email, Password, Type)."); // Simple alert, can use toast
       return;
     }
     // Handle user creation logic here (e.g., API call)
-    console.log('Creating user (simulated):', { username, email, password, type: userType });
+    console.log('Creating user (simulated):', { username, email, password, fullName, type: userType }); // Added fullName to log
     // onUserCreate({ username, email, password, type: userType }); // Example callback
     onClose(); // Close modal after creation
     // Reset fields
     setUsername('');
     setEmail('');
     setPassword('');
+    setFullName(''); // Reset fullName
+    setUserType('');
+  };
+
+  const resetFieldsAndClose = () => {
+    onClose();
+    setUsername('');
+    setEmail('');
+    setPassword('');
+    setFullName(''); // Reset fullName on cancel
     setUserType('');
   };
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={onClose}>
+    <AlertDialog open={isOpen} onOpenChange={(open) => { if (!open) resetFieldsAndClose(); else onClose();}}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Create New User</AlertDialogTitle>
@@ -60,9 +71,9 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
             Enter the details for the new user. Username and Email must be unique.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="grid gap-3 py-4"> {/* Reduced gap */}
-          <div className="grid grid-cols-4 items-center gap-3"> {/* Reduced gap */}
-            <Label htmlFor="username" className="text-right text-xs"> {/* Smaller label */}
+        <div className="grid gap-3 py-4">
+          <div className="grid grid-cols-4 items-center gap-3">
+            <Label htmlFor="username" className="text-right text-xs">
               Username
             </Label>
             <Input 
@@ -73,8 +84,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
               placeholder="e.g., newuser123" 
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-3"> {/* Reduced gap */}
-            <Label htmlFor="email" className="text-right text-xs"> {/* Smaller label */}
+          <div className="grid grid-cols-4 items-center gap-3">
+            <Label htmlFor="email" className="text-right text-xs">
               Email
             </Label>
             <Input 
@@ -86,8 +97,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
               placeholder="e.g., user@example.com"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-3"> {/* Reduced gap */}
-            <Label htmlFor="password" className="text-right text-xs"> {/* Smaller label */}
+          <div className="grid grid-cols-4 items-center gap-3">
+            <Label htmlFor="password" className="text-right text-xs">
               Password
             </Label>
             <Input 
@@ -99,8 +110,20 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
               placeholder="••••••••"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-3"> {/* Reduced gap */}
-            <Label htmlFor="type" className="text-right text-xs"> {/* Smaller label */}
+          <div className="grid grid-cols-4 items-center gap-3"> {/* Added Full Name field */}
+            <Label htmlFor="fullName" className="text-right text-xs">
+              Full Name
+            </Label>
+            <Input 
+              id="fullName" 
+              value={fullName} 
+              onChange={(e) => setFullName(e.target.value)} 
+              className="col-span-3" 
+              placeholder="e.g., John Doe"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-3">
+            <Label htmlFor="type" className="text-right text-xs">
               Type
             </Label>
             <Select onValueChange={(value) => setUserType(value as UserType)} value={userType}>
@@ -115,14 +138,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
           </div>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => {
-            onClose();
-            // Optionally reset fields on cancel too
-            setUsername('');
-            setEmail('');
-            setPassword('');
-            setUserType('');
-          }}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel onClick={resetFieldsAndClose}>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={handleCreateUser}>Create User</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
